@@ -1,0 +1,27 @@
+done use valid HeaderParser instance in setup (don't try to test bad file name)
+done not needed clang doesn't use exceptions create a class to test exception with bad file
+done finish HeaderParser(), addSourceFile and addSearchPath
+done create an inline initializeCompilerInstance
+done set clang::InitializePreprocessor (line 99 in gears.cpp) in parse method
+done remove gears.h , .cpp
+done continue test default constructor
+done test with args constructor
+done full test of parsing
+done add tests  for EnumConstant, Parameter, Field
+done add tests for Type
+done remove getInternalTypePtr test and the others
+done see for pb isCanonical see mail and const RecordType * getAsStructureType() const then TagDecl * getDecl() const
+done create a method in order to get the represented clang class (getInternalClangTypeClassName() )
+done find all the QualType methods that returns another QualType
+done add isMain() method to Function class
+TODO add c++ ability with :CompilerInvocation::setLangDefaults(languageOptions, IK_CXX); setLangDefaults + InputKind 
+and http://www.ibm.com/developerworks/linux/library/os-createcompilerllvm2/index.html?ca=drs-#list15
+  where to do spécify it ?
+    HeaderParser constructor with default langage C
+    HeaderParser::parse(std::string langage)
+!!!!http://stackoverflow.com/questions/23327997/failing-to-parse-c-using-llvm-and-clang
+TODO create tests for those methods
+TODO update swig lib
+
+TODO find a way in order to get Decl from typedef -> Type
+TODO handle class and methods nope

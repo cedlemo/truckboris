@@ -1,0 +1,158 @@
+//#include "gears.h"
+#include "HeaderParser.h"
+#include "clang/Parse/ParseAST.h"
+#include "clang/Frontend/CompilerInstance.h"
+#include "clang/Frontend/Utils.h" //InitializePreprocessor
+#include "clang/Basic/TargetInfo.h" //TargetInfo
+#include "llvm/Support/Host.h" //llvm::sys::getDefaultTargetTriple
+#include "clang/Lex/Preprocessor.h" 
+#include "clang/Lex/HeaderSearch.h" //HeaderSearch HeaderSearchOptions
+//#include "dbg.h"
+#include <algorithm>
+
+inline void initializeCompilerInstance(const clang::CompilerInstance& ci)
+{
+  ci.createDiagnostics();
+  llvm::IntrusiveRefCntPtr<clang::TargetOptions> pto( new clang::TargetOptions());
+  pto->Triple = llvm::sys::getDefaultTargetTriple();
+  clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(ci.getDiagnostics(), pto.getPtr());
+  ci.setTarget(pti);
+  ci.createFileManager();
+  
+  ci.createFileManager();
+  ci.createSourceManager(ci.getFileManager());
+#ifdef CLANG_3_5
+  ci.createPreprocessor(clang::TU_Complete);
+#else
+  ci.createPreprocessor(); 
+#endif  
+}
+namespace TruckBoris {
+  /*HeaderParser()
+  {
+    m_source = std::string();
+    m_headerPaths = std::vector<std::string>();
+    initializeCompilerInstance(m_ci);
+    m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
+    m_ciInitialized = false;
+  }*/
+  HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths)
+  {
+    m_source = sourceFile;
+    /*replace
+    m_ciInitialized = addSourceFile(sourceFile);
+    */
+    m_headersPaths = headersPaths;
+    /*replace
+    addSearchPaths(headersPaths);
+    */
+    initializeCompilerInstance(m_ci, m_headersPaths);
+    /*replace
+    initializeCompilerInstance(m_ci);
+    */
+    //m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
+    // TODO use exception for if(!loadSourceFile(ci,sourceFile) )
+    loadSourceFile(m_ci, m_source);
+    m_headerElements = NULL;
+  }
+  HeaderParser::~HeaderParser()
+  {
+  // FIXME 
+  //  delete m_headersElements;
+  }
+  /*
+  bool addSourceFile(const std::string& fileName)
+  {
+    const clang::FileEntry *pFile = m_ci.getFileManager().getFile(fileName.c_str());
+    if(!pFile)
+    {
+      m_source = std::string();
+      return  false;
+    }
+    m_ci.getSourceManager().createMainFileID(pFile);
+    m_source = fileName;
+    return true;   
+  }
+  void addSearchPath(const std::string& pathName)
+  {
+    if (std::find(m_headerPaths.begin(), m_headerPaths.end(), pathName) == m_headerPaths.end())
+    {
+      m_hso->AddPath( pathName->c_str()
+                      clang::frontend::Angled,
+                      false,
+                      false);
+      m_headerPaths.push_back(pathName);
+    }
+  }
+  void addSearchPaths(const std::vector<std::string>& pathNames)
+  {
+    std::vector<std::string>::const_iterator it;
+    for( it = pathNames.begin(); it != pathNames.end(); ++it)
+    {
+      addSearchPath((*it));
+    }
+  }
+  */
+  void 
+  HeaderParser::parse()
+  {
+    //clean all allowing to relaunch a parse  
+    if ( m_headerElements )
+    {
+      // FIXME
+      //delete m_headersElements;
+    }
+#ifdef CLANG_3_5
+   //get gcc header with helpers 
+    GenericGcc::GCCInstallationDetector gcc();
+    if(gcc.isValid())
+      gcc.print(llvm::outs); 
+#endif
+  clang::InitializePreprocessor(ci.getPreprocessor(),
+                                ci.getPreprocessorOpts(),
+                                *hso,
+                                ci.getFrontendOpts()); 
+    m_ci.createASTContext();
+    m_headerElements = new HeaderElements();
+    m_ci.setASTConsumer(m_headerElements);
+    m_ci.getDiagnosticClient().BeginSourceFile(m_ci.getLangOpts(),
+                                               &m_ci.getPreprocessor());
+    clang::ParseAST(m_ci.getPreprocessor(), m_headerElements, m_ci.getASTContext());
+    m_ci.getDiagnosticClient().EndSourceFile();
+  }
+  const clang::LangOptions& 
+  HeaderParser::getLangOpts () const
+  {
+    return m_ci.getLangOpts();
+  }
+  clang::SourceManager&
+  HeaderParser::getSourceManager() const
+  {
+    return m_ci.getSourceManager();
+  }
+  std::vector<Function> 
+  HeaderParser::getFunctions() const
+  {
+    return m_headerElements->getFunctions();
+  }
+  std::vector<Structure>
+  HeaderParser::getStructures() const
+  {
+    return m_headerElements->getStructures();
+  }
+  std::vector<Enum>
+  HeaderParser::getEnums() const
+  {
+    return m_headerElements->getEnums();
+  }
+  std::vector<TagDeclaration>
+  HeaderParser::getUnions() const
+  {
+    return m_headerElements->getUnions();
+  }
+  std::vector<Typedef>
+  HeaderParser::getTypedefs() const
+  {
+    return m_headerElements->getTypedefs();
+  }
+}
