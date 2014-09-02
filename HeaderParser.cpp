@@ -1,4 +1,3 @@
-//#include "gears.h"
 #include "HeaderParser.h"
 #include "clang/Parse/ParseAST.h"
 #include "clang/Frontend/CompilerInstance.h"
