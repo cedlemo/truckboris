@@ -7,7 +7,6 @@
 #include "llvm/Support/Host.h" //llvm::sys::getDefaultTargetTriple
 #include "clang/Lex/Preprocessor.h" 
 #include "clang/Lex/HeaderSearch.h" //HeaderSearch HeaderSearchOptions
-//#include "dbg.h"
 #include <algorithm>
 
 inline void initializeCompilerInstance(clang::CompilerInstance * ci, clang::InputKind langage)
