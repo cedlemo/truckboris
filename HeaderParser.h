@@ -7,15 +7,13 @@ namespace TruckBoris {
   class HeaderParser
   {
     public:
-      /*HeaderParser(); ambiguous with the following methods when no args*/
-      HeaderParser(clang::InputKind langage = clang::IK_C);
-      HeaderParser( const std::string&  sourceFile, const std::vector<std::string>& headersPaths, clang::InputKind langage = clang::IK_C);
+      HeaderParser();
+      HeaderParser( const std::string&  sourceFile, const std::vector<std::string>& headersPaths);
       ~HeaderParser();
       bool addSourceFile(const std::string& fileName);
       void addSearchPath(const std::string& pathName);
       void addSearchPaths(const std::vector<std::string>& pathNames);
       bool parse();
-      //bool parse(std::string langage);
       const clang::LangOptions& getLangOpts () const;
       clang::SourceManager&   getSourceManager() const;
       std::vector<Function> getFunctions() const;
@@ -33,10 +31,7 @@ namespace TruckBoris {
       std::string m_source;
       std::vector<std::string> m_headersPaths;
       clang::CompilerInstance *m_ci;
-      clang::InputKind m_langage;
-      clang::LangOptions m_langOpts;
       HeaderElements * m_headerElements; 
-      bool m_Cpp;
   };
 }
 #endif

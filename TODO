@@ -14,6 +14,7 @@ done see for pb isCanonical see mail and const RecordType * getAsStructureType()
 done create a method in order to get the represented clang class (getInternalClangTypeClassName() )
 done find all the QualType methods that returns another QualType
 done add isMain() method to Function class
+TODO do stack allocation with CompilerInstance and HeaderElements
 TODO add c++ ability with :CompilerInvocation::setLangDefaults(languageOptions, IK_CXX); setLangDefaults + InputKind 
 and http://www.ibm.com/developerworks/linux/library/os-createcompilerllvm2/index.html?ca=drs-#list15
   where to do spécify it ?

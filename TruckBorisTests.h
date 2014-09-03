@@ -4,6 +4,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #define TEST_SOURCE_FILE "./data/test.cpp"
 #define TEST_CLASS_SOURCE_FILE "./data/class.h"
@@ -21,23 +22,28 @@ class TruckBorisDefaultConstructorTests: public CppUnit::TestFixture
   }
   void tearDown()
   {
+    std::cout << "Delete start" << std::endl;
     if(m_headerParser)
-    delete m_headerParser;
+      delete m_headerParser;
+    std::cout << "Delete stop" << std::endl;
   }
   void headerParser_testEmptyHeaderParser()
   {
+    std::cout << "test Empty Header" << std::endl;
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string() );
     CPPUNIT_ASSERT(m_headerParser->getHeadersPaths().size() == 0);
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
   }
   void headerParser_testAddGoodSourceFile()
   {
+    std::cout << "test add good src file" << std::endl;
     m_headerParser->addSourceFile(std::string(TEST_SOURCE_FILE));
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
   } 
   void headerParser_testAddHeaderPath()
   {
+    std::cout << "test add Header Path" << std::endl;
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     m_headerParser->addSearchPath(std::string("/usr/include"));
     std::vector<std::string> hp = m_headerParser->getHeadersPaths();
@@ -46,6 +52,7 @@ class TruckBorisDefaultConstructorTests: public CppUnit::TestFixture
   }
   void headerParser_testAddHeadersPaths()
   {
+    std::cout << "test add Headers Paths" << std::endl;
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     std::vector<std::string> input;
     input.push_back(std::string("/usr/include/xcb"));
@@ -63,6 +70,7 @@ class TruckBorisDefaultConstructorTests: public CppUnit::TestFixture
   }
   void headerParser_testParse()
   {
+    std::cout << "test Parse" << std::endl;
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     m_headerParser->addSourceFile(TEST_SOURCE_FILE);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
@@ -450,43 +458,6 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
   CPPUNIT_TEST(headerParser_testField);
   CPPUNIT_TEST(headerParser_testEnumConstants);
   CPPUNIT_TEST(headerParser_testType);
-  CPPUNIT_TEST_SUITE_END();
-};
-class TruckBorisCppParsingTests: public CppUnit::TestFixture
-{
-  private:
-    TruckBoris::HeaderParser * m_headerParser;
-  public:
-  void setUp()
-  {
-    m_headerParser = NULL;
-    std::vector<std::string> hp;
-    hp.push_back(std::string("/usr/include"));
-    m_headerParser = new TruckBoris::HeaderParser(std::string(TEST_CLASS_SOURCE_FILE),hp, clang::IK_CXX);
-  }
-  void tearDown()
-  {
-    if(m_headerParser)
-    delete m_headerParser;
-  }
-  void headerParser_testCPlusPlusConfiguration()
-  {
-    CPPUNIT_ASSERT(m_headerParser->isCpp() == 1);
-    const clang::LangOptions & langOpts = m_headerParser->getLangOpts();
-    CPPUNIT_ASSERT(langOpts.CPlusPlus == 1);
-  } 
-  void headerParser_testFunctions()
-  {
-    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
-    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_CLASS_SOURCE_FILE) );
-    CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Function> f;
-    f = m_headerParser->getFunctions();
-    CPPUNIT_ASSERT(f.size() == 4);
-  }
-  CPPUNIT_TEST_SUITE(TruckBorisCppParsingTests);
-  CPPUNIT_TEST(headerParser_testCPlusPlusConfiguration);
-  CPPUNIT_TEST(headerParser_testFunctions);
   CPPUNIT_TEST_SUITE_END();
 };
 #endif

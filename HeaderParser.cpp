@@ -8,12 +8,9 @@
 #include "clang/Lex/HeaderSearch.h" //HeaderSearch HeaderSearchOptions
 #include <algorithm>
 
-inline void initializeCompilerInstance(clang::CompilerInstance * ci, clang::InputKind langage)
+inline void initializeCompilerInstance(clang::CompilerInstance * ci)
 {
   ci->createDiagnostics();
-  clang::CompilerInvocation *invocation = new clang::CompilerInvocation;
-  clang::LangOptions langOpts;
-  ci->setInvocation(invocation);
   llvm::IntrusiveRefCntPtr<clang::TargetOptions> pto( new clang::TargetOptions());
   pto->Triple = llvm::sys::getDefaultTargetTriple();
   clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(ci->getDiagnostics(), pto.getPtr());
@@ -27,54 +24,24 @@ inline void initializeCompilerInstance(clang::CompilerInstance * ci, clang::Inpu
   ci->createPreprocessor(); 
 #endif  
   ci->getPreprocessorOpts().UsePredefines = false;
-  if( langage == clang::IK_CXX)
-    langOpts.CPlusPlus = 1; 
-  invocation->setLangDefaults(langOpts, langage);
 }
 namespace TruckBoris {
-/*  HeaderParser::HeaderParser()
+  HeaderParser::HeaderParser()
   {
     m_source = std::string();
     m_headersPaths = std::vector<std::string>();
+    m_ci = new clang::CompilerInstance();
     initializeCompilerInstance(m_ci);
     m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
-    m_langOpts = clang::LangOptions();
-    clang::CompilerInvocation::setLangDefaults(m_langOpts, clang::IK_C);
-    m_ciInitialized = true;
-    m_headerElements = NULL;
-  }*/
-  HeaderParser::HeaderParser(clang::InputKind langage /*= clang::IK_C*/)
-  {
-    m_source = std::string();
-    m_headersPaths = std::vector<std::string>();
-    m_langage = langage;
-    m_Cpp = 0;
-    if( langage == clang::IK_CXX)
-      m_Cpp = 1;
-    m_ci = new clang::CompilerInstance();
-    initializeCompilerInstance(m_ci, m_langage);
-    m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
-    //m_langOpts = clang::LangOptions();
-    //if( langage == clang::IK_CXX)
-    //  m_langOpts.CPlusPlus = 1; 
-//clang::CompilerInvocation::setLangDefaults(m_langOpts, langage);
     m_ciInitialized = true;
     m_headerElements = NULL;
   }
-  HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths, clang::InputKind langage /*= clang::IK_C*/)
+  HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths)
   {
-    m_langage = langage;
-    m_Cpp = 0;
-    if( langage == clang::IK_CXX)
-      m_Cpp = 1;
     m_ci = new clang::CompilerInstance();
-    initializeCompilerInstance(m_ci, m_langage);
+    initializeCompilerInstance(m_ci);
     m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
     m_ciInitialized = true;
-    //m_langOpts = clang::LangOptions();
-    //if( langage == clang::IK_CXX)
-    //  m_langOpts.CPlusPlus = 1; 
-    //clang::CompilerInvocation::setLangDefaults(m_ci->getLangOpts(), langage);
     addSourceFile(sourceFile);
     addSearchPaths(headersPaths);
     m_headerElements = NULL;
@@ -82,12 +49,9 @@ namespace TruckBoris {
   HeaderParser::~HeaderParser()
   {
   // FIXME 
-  //  delete m_headersElements;
+    delete m_ci;
+    delete m_headerElements;
   }
-  bool HeaderParser::isCpp() const
-  {
-    return m_Cpp;
-  }  
   bool HeaderParser::addSourceFile(const std::string& fileName)
   {
     if(!m_ciInitialized)

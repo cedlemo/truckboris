@@ -28,7 +28,7 @@ CLANGLIBS = -lclangTooling\
 TEST= truckBorisTests
 check_PROGRAMS = $(TEST) 
 # TODO set the files sources and test this shit
-truckBorisTests_SOURCES = Declarations.cpp  Function.cpp  HeaderElements.cpp  HeaderParser.cpp  TruckBorisTest.cpp  Type.cpp  gears.cpp 
+truckBorisTests_SOURCES = Declarations.cpp  Function.cpp  HeaderElements.cpp  HeaderParser.cpp  TruckBorisTest.cpp  Type.cpp 
 truckBorisTests_CXXFLAGS = $(CPPUNIT_FLAGS) $(CLANGCXXFLAGS) 
 truckBorisTests_LDFLAGS = $(CPPUNIT_LIBS) -ldl @LLVMLDFLAGS@ 
 truckBorisTests_LDADD = $(CLANGLIBS) @LLVMLIBS@ 
