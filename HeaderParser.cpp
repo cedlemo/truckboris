@@ -30,7 +30,7 @@ namespace TruckBoris {
   {
     m_source = std::string();
     m_headersPaths = std::vector<std::string>();
-    m_ci = new clang::CompilerInstance();
+    m_ci = clang::CompilerInstance();
     initializeCompilerInstance(m_ci);
     m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
     m_ciInitialized = true;
@@ -38,7 +38,7 @@ namespace TruckBoris {
   }
   HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths)
   {
-    m_ci = new clang::CompilerInstance();
+    m_ci = clang::CompilerInstance();
     initializeCompilerInstance(m_ci);
     m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
     m_ciInitialized = true;
@@ -57,13 +57,13 @@ namespace TruckBoris {
     if(!m_ciInitialized)
       return false; // TODO add an error message ?
 
-    const clang::FileEntry *pFile = m_ci->getFileManager().getFile(fileName.c_str());
+    const clang::FileEntry *pFile = m_ci.getFileManager().getFile(fileName.c_str());
     if(!pFile)
     {
       m_source = std::string();
       return  false;
     }
-    m_ci->getSourceManager().createMainFileID(pFile);
+    m_ci.getSourceManager().createMainFileID(pFile);
     m_source = fileName;
     return true;   
   }
@@ -93,28 +93,28 @@ namespace TruckBoris {
     if(!m_ciInitialized || (m_source == std::string()) )
       return false;
     //clean all allowing to relaunch a parse  
-    if ( m_headerElements )
-    {
+    //if ( m_headerElements )
+    //{
       // FIXME
       //delete m_headersElements;
-    }
+    //}
 #ifdef CLANG_3_5
    //get gcc header with helpers 
     GenericGcc::GCCInstallationDetector gcc();
     if(gcc.isValid())
       gcc.print(llvm::outs); 
 #endif
-  clang::InitializePreprocessor(m_ci->getPreprocessor(),
-                                m_ci->getPreprocessorOpts(),
+  clang::InitializePreprocessor(m_ci.getPreprocessor(),
+                                m_ci.getPreprocessorOpts(),
                                 *m_hso,
-                                m_ci->getFrontendOpts()); 
-    m_ci->createASTContext();
-    m_headerElements = new HeaderElements();
-    m_ci->setASTConsumer(m_headerElements);
-    m_ci->getDiagnosticClient().BeginSourceFile(m_ci->getLangOpts()/*m_langOpts*/,
-                                               &m_ci->getPreprocessor());
-    clang::ParseAST(m_ci->getPreprocessor(), m_headerElements, m_ci->getASTContext());
-    m_ci->getDiagnosticClient().EndSourceFile();
+                                m_ci.getFrontendOpts()); 
+    m_ci.createASTContext();
+    m_headerElements = HeaderElements();
+    m_ci.setASTConsumer(m_headerElements);
+    m_ci.getDiagnosticClient().BeginSourceFile(m_ci.getLangOpts()/*m_langOpts*/,
+                                               &m_ci.getPreprocessor());
+    clang::ParseAST(m_ci.getPreprocessor(), &m_headerElements, m_ci.getASTContext());
+    m_ci.getDiagnosticClient().EndSourceFile();
     return true;
   }
 /*  bool 
@@ -135,28 +135,28 @@ namespace TruckBoris {
     if(gcc.isValid())
       gcc.print(llvm::outs); 
 #endif
-  clang::InitializePreprocessor(m_ci->getPreprocessor(),
-                                m_ci->getPreprocessorOpts(),
+  clang::InitializePreprocessor(m_ci.getPreprocessor(),
+                                m_ci.getPreprocessorOpts(),
                                 *m_hso,
-                                m_ci->getFrontendOpts()); 
-    m_ci->createASTContext();
+                                m_ci.getFrontendOpts()); 
+    m_ci.createASTContext();
     m_headerElements = new HeaderElements();
-    m_ci->setASTConsumer(m_headerElements);
-    m_ci->getDiagnosticClient().BeginSourceFile(m_langOpts,
-                                               &m_ci->getPreprocessor());
-    clang::ParseAST(m_ci->getPreprocessor(), m_headerElements, m_ci->getASTContext());
-    m_ci->getDiagnosticClient().EndSourceFile();
+    m_ci.setASTConsumer(m_headerElements);
+    m_ci.getDiagnosticClient().BeginSourceFile(m_langOpts,
+                                               &m_ci.getPreprocessor());
+    clang::ParseAST(m_ci.getPreprocessor(), m_headerElements, m_ci.getASTContext());
+    m_ci.getDiagnosticClient().EndSourceFile();
     return true;
   }*/
   const clang::LangOptions& 
   HeaderParser::getLangOpts () const
   {
-    return m_ci->getLangOpts()/*m_langOpts*/;
+    return m_ci.getLangOpts()/*m_langOpts*/;
   }
   clang::SourceManager&
   HeaderParser::getSourceManager() const
   {
-    return m_ci->getSourceManager();
+    return m_ci.getSourceManager();
   }
   std::vector<Function> 
   HeaderParser::getFunctions() const

@@ -30,8 +30,8 @@ namespace TruckBoris {
       bool m_ciInitialized;
       std::string m_source;
       std::vector<std::string> m_headersPaths;
-      clang::CompilerInstance *m_ci;
-      HeaderElements * m_headerElements; 
+      clang::CompilerInstance m_ci;
+      HeaderElements m_headerElements; 
   };
 }
 #endif
