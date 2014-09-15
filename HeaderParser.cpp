@@ -7,8 +7,8 @@
 #include "clang/Lex/Preprocessor.h" 
 #include "clang/Lex/HeaderSearch.h" //HeaderSearch HeaderSearchOptions
 #include <algorithm>
-
-inline void initializeCompilerInstance(clang::CompilerInstance * ci)
+/*
+inline void initializeCompilerInstance(clang::CompilerInstance &ci)
 {
   ci->createDiagnostics();
   llvm::IntrusiveRefCntPtr<clang::TargetOptions> pto( new clang::TargetOptions());
@@ -24,19 +24,65 @@ inline void initializeCompilerInstance(clang::CompilerInstance * ci)
   ci->createPreprocessor(); 
 #endif  
   ci->getPreprocessorOpts().UsePredefines = false;
-}
+
+  ci.createDiagnostics();
+//ci.setTarget(pti);
+
+  ci.createFileManager();
+  ci.createSourceManager(ci.getFileManager());
+
+  llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions> hso( new clang::HeaderSearchOptions());
+
+  clang::LangOptions langOptions;
+  llvm::IntrusiveRefCntPtr<clang::PreprocessorOptions> PPOpts (new clang::PreprocessorOptions());
+  llvm::IntrusiveRefCntPtr<clang::Preprocessor> preprocessor (new clang::Preprocessor(PPOpts, ci.getDiagnostics, langOptions, getSourceManager, headerSearch, ci));
+
+  std::shared_ptr<TargetOptions> pto = std::make_shared<TargetOptions>();
+  pto->Triple = llvm::sys::getDefaultTargetTriple();
+  TargetInfo *pti = TargetInfo::CreateTargetInfo(ci.getDiagnostics(), pto);
+  preprocessor->initialize(*targetInfo);
+  ci.setPreprocessor(preprocessor);
+  clang::InitializePreprocessor(ci.getPreprocessor(), 
+                                ci.getPreprocessorOpts(),
+                                ci.getFrontendOpts());
+}*/
 namespace TruckBoris {
   HeaderParser::HeaderParser()
   {
     m_source = std::string();
     m_headersPaths = std::vector<std::string>();
-    m_ci = clang::CompilerInstance();
-    initializeCompilerInstance(m_ci);
-    m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
-    m_ciInitialized = true;
-    m_headerElements = NULL;
+    //m_ci = clang::CompilerInstance();
+    m_ci.createDiagnostics();
+
+    m_ci.createFileManager();
+    m_ci.createSourceManager(m_ci.getFileManager());
+
+    m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions> ( new clang::HeaderSearchOptions());
+
+    clang::LangOptions langOptions;
+    //langOptions.CPlusPlus = 1;
+    std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
+    pto->Triple = llvm::sys::getDefaultTargetTriple();
+    clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
+
+    clang::HeaderSearch headerSearch(m_hso,
+                            m_ci.getSourceManager(),
+                            m_ci.getDiagnostics(),
+                            langOptions,
+                            pti);
+    
+llvm::IntrusiveRefCntPtr<clang::PreprocessorOptions> PPOpts (new clang::PreprocessorOptions());
+    llvm::IntrusiveRefCntPtr<clang::Preprocessor> preprocessor (new clang::Preprocessor(PPOpts, m_ci.getDiagnostics(), langOptions, m_ci.getSourceManager(), headerSearch, m_ci));
+
+    preprocessor->Initialize(*pti);
+    m_ci.setPreprocessor(preprocessor.get());
+    clang::InitializePreprocessor(m_ci.getPreprocessor(), 
+                                  m_ci.getPreprocessorOpts(),
+                                  m_ci.getFrontendOpts());
+      m_ciInitialized = true;
+      //m_headerElements = NULL;
   }
-  HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths)
+/*  HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths)
   {
     m_ci = clang::CompilerInstance();
     initializeCompilerInstance(m_ci);
@@ -45,12 +91,12 @@ namespace TruckBoris {
     addSourceFile(sourceFile);
     addSearchPaths(headersPaths);
     m_headerElements = NULL;
-  }
+  }*/
   HeaderParser::~HeaderParser()
   {
   // FIXME 
-    delete m_ci;
-    delete m_headerElements;
+    //delete m_ci;
+    //delete m_headerElements;
   }
   bool HeaderParser::addSourceFile(const std::string& fileName)
   {
@@ -63,8 +109,12 @@ namespace TruckBoris {
       m_source = std::string();
       return  false;
     }
-    m_ci.getSourceManager().createMainFileID(pFile);
+    clang::FileID id = m_ci.getSourceManager().createFileID(pFile,
+                                                          clang::SourceLocation(),
+                                                          clang::SrcMgr::C_User);
+    m_ci.getSourceManager().setMainFileID(id);
     m_source = fileName;
+
     return true;   
   }
   void HeaderParser::addSearchPath(const std::string& pathName)
@@ -106,11 +156,10 @@ namespace TruckBoris {
 #endif
   clang::InitializePreprocessor(m_ci.getPreprocessor(),
                                 m_ci.getPreprocessorOpts(),
-                                *m_hso,
                                 m_ci.getFrontendOpts()); 
     m_ci.createASTContext();
     m_headerElements = HeaderElements();
-    m_ci.setASTConsumer(m_headerElements);
+    m_ci.setASTConsumer(&m_headerElements);
     m_ci.getDiagnosticClient().BeginSourceFile(m_ci.getLangOpts()/*m_langOpts*/,
                                                &m_ci.getPreprocessor());
     clang::ParseAST(m_ci.getPreprocessor(), &m_headerElements, m_ci.getASTContext());
@@ -161,27 +210,27 @@ namespace TruckBoris {
   std::vector<Function> 
   HeaderParser::getFunctions() const
   {
-    return m_headerElements->getFunctions();
+    return m_headerElements.getFunctions();
   }
   std::vector<Structure>
   HeaderParser::getStructures() const
   {
-    return m_headerElements->getStructures();
+    return m_headerElements.getStructures();
   }
   std::vector<Enum>
   HeaderParser::getEnums() const
   {
-    return m_headerElements->getEnums();
+    return m_headerElements.getEnums();
   }
   std::vector<Union>
   HeaderParser::getUnions() const
   {
-    return m_headerElements->getUnions();
+    return m_headerElements.getUnions();
   }
   std::vector<Typedef>
   HeaderParser::getTypedefs() const
   {
-    return m_headerElements->getTypedefs();
+    return m_headerElements.getTypedefs();
   }
   std::string
   HeaderParser::getSourceFile() const

@@ -37,7 +37,7 @@ namespace TruckBoris {
   Type Function::getReturn() const
   {
     if(m_function)
-      return Type(m_function->getResultType() );
+      return Type(m_function->getReturnType() );
     else
       return Type();
   }

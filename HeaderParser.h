@@ -8,7 +8,7 @@ namespace TruckBoris {
   {
     public:
       HeaderParser();
-      HeaderParser( const std::string&  sourceFile, const std::vector<std::string>& headersPaths);
+//      HeaderParser( const std::string&  sourceFile, const std::vector<std::string>& headersPaths);
       ~HeaderParser();
       bool addSourceFile(const std::string& fileName);
       void addSearchPath(const std::string& pathName);
@@ -24,7 +24,7 @@ namespace TruckBoris {
       std::string getSourceFile() const;
       std::vector<std::string> getHeadersPaths() const;
       bool isInitialized() const;
-      bool isCpp() const;
+//      bool isCpp() const;
     private:
       llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions> m_hso;
       bool m_ciInitialized;

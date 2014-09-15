@@ -5,8 +5,6 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 CPPUNIT_TEST_SUITE_REGISTRATION(TruckBorisDefaultConstructorTests);
-CPPUNIT_TEST_SUITE_REGISTRATION(TruckBorisSecondConstructorTests);
-CPPUNIT_TEST_SUITE_REGISTRATION(TruckBorisParsingTests);
 int main(int argc, char **argv)
 {
   bool successfull = false;

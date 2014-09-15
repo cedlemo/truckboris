@@ -5,6 +5,7 @@ AM_CONFIG_HEADER(config.h)
 AC_SUBST([LLVMCONFIG],[$(which llvm-config)])
 AC_SUBST([LLVMLDFLAGS],[$($LLVMCONFIG --ldflags )])
 AC_SUBST([LLVMLIBS],[$(llvm-config --libs )])
+AC_SUBST([LLVMSYSLIBS],[$(llvm-config --system-libs )])
 AC_PROG_CXX
 AC_PROG_CC
 AM_INIT_AUTOMAKE(1.6 dist-bzip2)

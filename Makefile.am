@@ -19,12 +19,11 @@ CLANGLIBS = -lclangTooling\
         -lclangAnalysis\
         -lclangARCMigrate\
         -lclangRewriteFrontend\
-        -lclangRewriteCore\
         -lclangEdit\
         -lclangAST\
         -lclangLex\
         -lclangBasic\
-                -lcurses
+        @LLVMSYSLIBS@
 TEST= truckBorisTests
 check_PROGRAMS = $(TEST) 
 # TODO set the files sources and test this shit
