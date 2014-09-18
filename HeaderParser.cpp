@@ -7,6 +7,7 @@
 #include "clang/Lex/Preprocessor.h" 
 #include "clang/Lex/HeaderSearch.h" //HeaderSearch HeaderSearchOptions
 #include <algorithm>
+#include <iostream>
 /*
 inline void initializeCompilerInstance(clang::CompilerInstance &ci)
 {
@@ -51,47 +52,36 @@ namespace TruckBoris {
   {
     m_source = std::string();
     m_headersPaths = std::vector<std::string>();
-    //m_ci = clang::CompilerInstance();
+    
     m_ci.createDiagnostics();
-
     m_ci.createFileManager();
     m_ci.createSourceManager(m_ci.getFileManager());
-
-    m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions> ( new clang::HeaderSearchOptions());
-
-    clang::LangOptions langOptions;
-    //langOptions.CPlusPlus = 1;
     std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
     pto->Triple = llvm::sys::getDefaultTargetTriple();
     clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
-
-    clang::HeaderSearch headerSearch(m_hso,
-                            m_ci.getSourceManager(),
-                            m_ci.getDiagnostics(),
-                            langOptions,
-                            pti);
-    
-llvm::IntrusiveRefCntPtr<clang::PreprocessorOptions> PPOpts (new clang::PreprocessorOptions());
-    llvm::IntrusiveRefCntPtr<clang::Preprocessor> preprocessor (new clang::Preprocessor(PPOpts, m_ci.getDiagnostics(), langOptions, m_ci.getSourceManager(), headerSearch, m_ci));
-
-    preprocessor->Initialize(*pti);
-    m_ci.setPreprocessor(preprocessor.get());
-    clang::InitializePreprocessor(m_ci.getPreprocessor(), 
-                                  m_ci.getPreprocessorOpts(),
-                                  m_ci.getFrontendOpts());
-      m_ciInitialized = true;
-      //m_headerElements = NULL;
+    m_ci.setTarget(pti);
+    m_ci.createPreprocessor(clang::TU_Complete);
+    m_ciInitialized = true;
+    m_headerElements = NULL;
   }
-/*  HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths)
+  HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths)
   {
-    m_ci = clang::CompilerInstance();
-    initializeCompilerInstance(m_ci);
-    m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
+    m_source = std::string();
+    m_headersPaths = std::vector<std::string>();
+    
+    m_ci.createDiagnostics();
+    m_ci.createFileManager();
+    m_ci.createSourceManager(m_ci.getFileManager());
+    std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
+    pto->Triple = llvm::sys::getDefaultTargetTriple();
+    clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
+    m_ci.setTarget(pti);
+    m_ci.createPreprocessor(clang::TU_Complete);
     m_ciInitialized = true;
     addSourceFile(sourceFile);
     addSearchPaths(headersPaths);
     m_headerElements = NULL;
-  }*/
+  }
   HeaderParser::~HeaderParser()
   {
   // FIXME 
@@ -121,7 +111,7 @@ llvm::IntrusiveRefCntPtr<clang::PreprocessorOptions> PPOpts (new clang::Preproce
   {
     if (std::find(m_headersPaths.begin(), m_headersPaths.end(), pathName) == m_headersPaths.end())
     {
-      m_hso->AddPath( pathName.c_str(),
+      m_ci.getHeaderSearchOpts().AddPath( pathName.c_str(),
                       clang::frontend::Angled,
                       false,
                       false);
@@ -154,15 +144,15 @@ llvm::IntrusiveRefCntPtr<clang::PreprocessorOptions> PPOpts (new clang::Preproce
     if(gcc.isValid())
       gcc.print(llvm::outs); 
 #endif
-  clang::InitializePreprocessor(m_ci.getPreprocessor(),
+    clang::InitializePreprocessor(m_ci.getPreprocessor(),
                                 m_ci.getPreprocessorOpts(),
                                 m_ci.getFrontendOpts()); 
+    m_headerElements = new HeaderElements();
+    m_ci.setASTConsumer(m_headerElements);
     m_ci.createASTContext();
-    m_headerElements = HeaderElements();
-    m_ci.setASTConsumer(&m_headerElements);
     m_ci.getDiagnosticClient().BeginSourceFile(m_ci.getLangOpts()/*m_langOpts*/,
                                                &m_ci.getPreprocessor());
-    clang::ParseAST(m_ci.getPreprocessor(), &m_headerElements, m_ci.getASTContext());
+    clang::ParseAST(m_ci.getPreprocessor(), m_headerElements, m_ci.getASTContext());
     m_ci.getDiagnosticClient().EndSourceFile();
     return true;
   }
@@ -210,27 +200,27 @@ llvm::IntrusiveRefCntPtr<clang::PreprocessorOptions> PPOpts (new clang::Preproce
   std::vector<Function> 
   HeaderParser::getFunctions() const
   {
-    return m_headerElements.getFunctions();
+    return m_headerElements->getFunctions();
   }
   std::vector<Structure>
   HeaderParser::getStructures() const
   {
-    return m_headerElements.getStructures();
+    return m_headerElements->getStructures();
   }
   std::vector<Enum>
   HeaderParser::getEnums() const
   {
-    return m_headerElements.getEnums();
+    return m_headerElements->getEnums();
   }
   std::vector<Union>
   HeaderParser::getUnions() const
   {
-    return m_headerElements.getUnions();
+    return m_headerElements->getUnions();
   }
   std::vector<Typedef>
   HeaderParser::getTypedefs() const
   {
-    return m_headerElements.getTypedefs();
+    return m_headerElements->getTypedefs();
   }
   std::string
   HeaderParser::getSourceFile() const
