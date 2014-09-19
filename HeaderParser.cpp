@@ -144,6 +144,7 @@ namespace TruckBoris {
     if(gcc.isValid())
       gcc.print(llvm::outs); 
 #endif
+    m_ci.createPreprocessor(clang::TU_Complete);
     clang::InitializePreprocessor(m_ci.getPreprocessor(),
                                 m_ci.getPreprocessorOpts(),
                                 m_ci.getFrontendOpts()); 
@@ -187,8 +188,8 @@ namespace TruckBoris {
     m_ci.getDiagnosticClient().EndSourceFile();
     return true;
   }*/
-  const clang::LangOptions& 
-  HeaderParser::getLangOpts () const
+  clang::LangOptions& 
+  HeaderParser::getLangOpts ()
   {
     return m_ci.getLangOpts()/*m_langOpts*/;
   }

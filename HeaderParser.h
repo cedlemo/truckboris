@@ -14,7 +14,7 @@ namespace TruckBoris {
       void addSearchPath(const std::string& pathName);
       void addSearchPaths(const std::vector<std::string>& pathNames);
       bool parse();
-      const clang::LangOptions& getLangOpts () const;
+      clang::LangOptions& getLangOpts ();
       clang::SourceManager&   getSourceManager() const;
       std::vector<Function> getFunctions() const;
       std::vector<Structure> getStructures() const;
