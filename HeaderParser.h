@@ -23,6 +23,7 @@ namespace TruckBoris {
       std::vector<Typedef> getTypedefs() const;
       std::string getSourceFile() const;
       std::vector<std::string> getHeadersPaths() const;
+      std::vector<TagDeclaration> getClasses() const;
       bool isInitialized() const;
 //      bool isCpp() const;
     private:

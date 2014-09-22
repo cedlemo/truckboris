@@ -7,7 +7,7 @@
 #include <iostream>
 
 #define TEST_SOURCE_FILE "./data/test.cpp"
-#define TEST_CLASS_SOURCE_FILE "./data/class.cpp"
+#define TEST_CLASS_SOURCE_FILE "./data/class.h"
 #define STR_MESSASSERT(stdStr1, stdStr2)\
   CPPUNIT_ASSERT_MESSAGE(stdStr1, stdStr1 == stdStr2)
 class TruckBorisDefaultConstructorTests: public CppUnit::TestFixture
@@ -457,17 +457,11 @@ class TruckBorisCppTests: public CppUnit::TestFixture
   void setUp()
   {
     m_headerParser = NULL;
-    std::vector<std::string> hp;
-    hp.push_back(std::string("/usr/include"));
-    hp.push_back(std::string("/usr/include/thisisatest"));
-    hp.push_back(std::string("/usr/include/evas-1"));
-    hp.push_back(std::string("/usr/lib/gcc/x86_64-unknown-linux-gnu/4.9.1/include"));
     m_headerParser = new TruckBoris::HeaderParser();
-    m_headerParser->getLangOpts().CPlusPlus = 1;
+    //m_headerParser->getLangOpts().CPlusPlus = 1;
+    clang::CompilerInvocation::setLangDefaults(m_headerParser->getLangOpts(), clang::IK_CXX); 
     m_headerParser->addSourceFile(std::string(TEST_CLASS_SOURCE_FILE));
     m_headerParser->addSearchPath(std::string("/usr/include"));
-    m_headerParser->addSearchPath(std::string("/usr/include/thisisatest"));
-    m_headerParser->addSearchPath(std::string("/usr/include/evas-1"));
     m_headerParser->addSearchPath(std::string("/usr/lib/gcc/x86_64-unknown-linux-gnu/4.9.1/include"));
   }
   void tearDown()
@@ -480,11 +474,9 @@ class TruckBorisCppTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_CLASS_SOURCE_FILE) );
     std::vector<std::string> hp = m_headerParser->getHeadersPaths();
-    CPPUNIT_ASSERT(hp.size() == 4);
+    CPPUNIT_ASSERT(hp.size() == 2);
     STR_MESSASSERT(hp[0], std::string("/usr/include"));
-    STR_MESSASSERT(hp[1], std::string("/usr/include/thisisatest"));
-    STR_MESSASSERT(hp[2], std::string("/usr/include/evas-1"));
-    STR_MESSASSERT(hp[3], std::string("/usr/lib/gcc/x86_64-unknown-linux-gnu/4.9.1/include"));
+    STR_MESSASSERT(hp[1], std::string("/usr/lib/gcc/x86_64-unknown-linux-gnu/4.9.1/include"));
   }
   void headerParser_testAddHeaderPath()
   {
@@ -493,12 +485,10 @@ class TruckBorisCppTests: public CppUnit::TestFixture
     m_headerParser->addSearchPath(std::string("/usr/include"));
     m_headerParser->addSearchPath(std::string("/usr/include/evas"));
     std::vector<std::string> hp = m_headerParser->getHeadersPaths();
-    CPPUNIT_ASSERT(hp.size() == 5);
+    CPPUNIT_ASSERT(hp.size() == 3);
     STR_MESSASSERT(hp[0], std::string("/usr/include"));
-    STR_MESSASSERT(hp[1], std::string("/usr/include/thisisatest"));
-    STR_MESSASSERT(hp[2], std::string("/usr/include/evas-1"));
-    STR_MESSASSERT(hp[3], std::string("/usr/lib/gcc/x86_64-unknown-linux-gnu/4.9.1/include"));
-    STR_MESSASSERT(hp[4], std::string("/usr/include/evas"));
+    STR_MESSASSERT(hp[1], std::string("/usr/lib/gcc/x86_64-unknown-linux-gnu/4.9.1/include"));
+    STR_MESSASSERT(hp[2], std::string("/usr/include/evas"));
   }
   void headerParser_testAddHeadersPaths()
   {
@@ -509,22 +499,21 @@ class TruckBorisCppTests: public CppUnit::TestFixture
     input.push_back(std::string("/usr/include/eina"));
     m_headerParser->addSearchPaths(input);
     std::vector<std::string> hp = m_headerParser->getHeadersPaths();
-    CPPUNIT_ASSERT(hp.size() == 6);
+    CPPUNIT_ASSERT(hp.size() == 4);
     STR_MESSASSERT(hp[0], std::string("/usr/include"));
-    STR_MESSASSERT(hp[1], std::string("/usr/include/thisisatest"));
-    STR_MESSASSERT(hp[2], std::string("/usr/include/evas-1"));
-    STR_MESSASSERT(hp[3], std::string("/usr/lib/gcc/x86_64-unknown-linux-gnu/4.9.1/include"));
-    STR_MESSASSERT(hp[4], std::string("/usr/include/xcb"));
-    STR_MESSASSERT(hp[5], std::string("/usr/include/eina"));
+    STR_MESSASSERT(hp[1], std::string("/usr/lib/gcc/x86_64-unknown-linux-gnu/4.9.1/include"));
+    STR_MESSASSERT(hp[2], std::string("/usr/include/xcb"));
+    STR_MESSASSERT(hp[3], std::string("/usr/include/eina"));
   }
   void headerParser_testParse()
   {
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_CLASS_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-//    std::vector<TruckBoris::Structure> structures;
-//    structures = m_headerParser->getStructures();
-//    CPPUNIT_ASSERT(structures.size() == 6 ); 
+    std::vector<TruckBoris::TagDeclaration> classes;
+    classes = m_headerParser->getClasses();
+    CPPUNIT_ASSERT(classes.size() == 2 ); 
+  
   }
   CPPUNIT_TEST_SUITE(TruckBorisCppTests);
   CPPUNIT_TEST(headerParser_testInitializedHeaderParser);

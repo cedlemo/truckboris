@@ -8,45 +8,6 @@
 #include "clang/Lex/HeaderSearch.h" //HeaderSearch HeaderSearchOptions
 #include <algorithm>
 #include <iostream>
-/*
-inline void initializeCompilerInstance(clang::CompilerInstance &ci)
-{
-  ci->createDiagnostics();
-  llvm::IntrusiveRefCntPtr<clang::TargetOptions> pto( new clang::TargetOptions());
-  pto->Triple = llvm::sys::getDefaultTargetTriple();
-  clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(ci->getDiagnostics(), pto.getPtr());
-  ci->setTarget(pti);
-  ci->createFileManager();
-  
-  ci->createSourceManager(ci->getFileManager());
-#ifdef CLANG_3_5
-  ci->createPreprocessor(clang::TU_Complete);
-#else
-  ci->createPreprocessor(); 
-#endif  
-  ci->getPreprocessorOpts().UsePredefines = false;
-
-  ci.createDiagnostics();
-//ci.setTarget(pti);
-
-  ci.createFileManager();
-  ci.createSourceManager(ci.getFileManager());
-
-  llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions> hso( new clang::HeaderSearchOptions());
-
-  clang::LangOptions langOptions;
-  llvm::IntrusiveRefCntPtr<clang::PreprocessorOptions> PPOpts (new clang::PreprocessorOptions());
-  llvm::IntrusiveRefCntPtr<clang::Preprocessor> preprocessor (new clang::Preprocessor(PPOpts, ci.getDiagnostics, langOptions, getSourceManager, headerSearch, ci));
-
-  std::shared_ptr<TargetOptions> pto = std::make_shared<TargetOptions>();
-  pto->Triple = llvm::sys::getDefaultTargetTriple();
-  TargetInfo *pti = TargetInfo::CreateTargetInfo(ci.getDiagnostics(), pto);
-  preprocessor->initialize(*targetInfo);
-  ci.setPreprocessor(preprocessor);
-  clang::InitializePreprocessor(ci.getPreprocessor(), 
-                                ci.getPreprocessorOpts(),
-                                ci.getFrontendOpts());
-}*/
 namespace TruckBoris {
   HeaderParser::HeaderParser()
   {
@@ -232,6 +193,11 @@ namespace TruckBoris {
   HeaderParser::getHeadersPaths() const
   {
     return m_headersPaths;
+  }
+  std::vector<TagDeclaration> 
+  HeaderParser::getClasses() const
+  {
+    return m_headerElements->getClasses();
   }
   bool HeaderParser::isInitialized() const
   {
