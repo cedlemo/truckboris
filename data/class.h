@@ -1,8 +1,8 @@
 class MyClass
 {
   public:
-    Class() {}
-    ~Class() {}
+    MyClass() {}
+    ~MyClass() {}
     bool isTrue() const;
     bool isFalse() const;
   private:

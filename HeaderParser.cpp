@@ -162,26 +162,41 @@ namespace TruckBoris {
   std::vector<Function> 
   HeaderParser::getFunctions() const
   {
+    if (m_source == std::string())
+      return std::vector<Function>(); 
+
     return m_headerElements->getFunctions();
   }
   std::vector<Structure>
   HeaderParser::getStructures() const
   {
+    if (m_source == std::string())
+      return std::vector<Structure>();
+
     return m_headerElements->getStructures();
   }
   std::vector<Enum>
   HeaderParser::getEnums() const
   {
+    if (m_source == std::string())
+      return std::vector<Enum>();
+
     return m_headerElements->getEnums();
   }
   std::vector<Union>
   HeaderParser::getUnions() const
   {
+    if (m_source == std::string())
+      return std::vector<Union>();
+
     return m_headerElements->getUnions();
   }
   std::vector<Typedef>
   HeaderParser::getTypedefs() const
   {
+    if (m_source == std::string())
+      return std::vector<Typedef>();
+
     return m_headerElements->getTypedefs();
   }
   std::string
@@ -197,6 +212,9 @@ namespace TruckBoris {
   std::vector<TagDeclaration> 
   HeaderParser::getClasses() const
   {
+    if (m_source == std::string())
+      return std::vector<TagDeclaration>();
+
     return m_headerElements->getClasses();
   }
   bool HeaderParser::isInitialized() const
