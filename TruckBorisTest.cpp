@@ -8,6 +8,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TruckBorisDefaultConstructorTests);
 CPPUNIT_TEST_SUITE_REGISTRATION(TruckBorisSecondConstructorTests);
 CPPUNIT_TEST_SUITE_REGISTRATION(TruckBorisParsingTests);
 CPPUNIT_TEST_SUITE_REGISTRATION(TruckBorisCppTests);
+CPPUNIT_TEST_SUITE_REGISTRATION(TruckBorisScopeParsingTests);
 int main(int argc, char **argv)
 {
   bool successfull = false;

@@ -5,11 +5,15 @@
 #include <vector>
 #include "Declarations.h"
 #include "Function.h"
+#include <iostream>
 namespace TruckBoris {
   class HeaderElements : public clang::ASTConsumer
   {
     public:
-      HeaderElements() : clang::ASTConsumer() { }
+      HeaderElements(clang::SourceManager *sourceManager, bool inMainFile = false) : clang::ASTConsumer() { 
+        m_sourceManager = sourceManager;
+        m_inMainFile = inMainFile;
+      }
       virtual ~HeaderElements() { }
 
       virtual bool HandleTopLevelDecl( clang::DeclGroupRef d);
@@ -27,6 +31,8 @@ namespace TruckBoris {
       std::vector<Union> m_unions;
       std::vector<Enum> m_enums;
       std::vector<TagDeclaration> m_classes;
+      clang::SourceManager *m_sourceManager;
+      bool m_inMainFile;
       /*add methods for classes*/
   };
 }

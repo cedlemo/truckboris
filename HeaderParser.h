@@ -13,7 +13,7 @@ namespace TruckBoris {
       bool addSourceFile(const std::string& fileName);
       void addSearchPath(const std::string& pathName);
       void addSearchPaths(const std::vector<std::string>& pathNames);
-      bool parse();
+      bool parse(bool mainFile = false);
       clang::LangOptions& getLangOpts ();
       clang::SourceManager&   getSourceManager() const;
       std::vector<Function> getFunctions() const;
@@ -32,7 +32,7 @@ namespace TruckBoris {
       std::string m_source;
       std::vector<std::string> m_headersPaths;
       clang::CompilerInstance m_ci;
-      HeaderElements *m_headerElements; 
+      HeaderElements *m_headerElements;
   };
 }
 #endif

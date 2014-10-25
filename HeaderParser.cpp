@@ -88,7 +88,7 @@ namespace TruckBoris {
     }
   }
   bool 
-  HeaderParser::parse()
+  HeaderParser::parse(bool mainFile)
   {
     //ci not initialized or no source to parse
     if(!m_ciInitialized || (m_source == std::string()) )
@@ -109,7 +109,7 @@ namespace TruckBoris {
     clang::InitializePreprocessor(m_ci.getPreprocessor(),
                                 m_ci.getPreprocessorOpts(),
                                 m_ci.getFrontendOpts()); 
-    m_headerElements = new HeaderElements();
+    m_headerElements = new HeaderElements(&(getSourceManager()), mainFile);
     m_ci.setASTConsumer(m_headerElements);
     m_ci.createASTContext();
     m_ci.getDiagnosticClient().BeginSourceFile(m_ci.getLangOpts()/*m_langOpts*/,

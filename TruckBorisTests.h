@@ -8,6 +8,7 @@
 
 #define TEST_SOURCE_FILE "./data/test.cpp"
 #define TEST_CLASS_SOURCE_FILE "./data/class.h"
+#define TEST_LIMIT_PARSING_SOURCE_FILE "./data/test.c"
 #define STR_MESSASSERT(stdStr1, stdStr2)\
   CPPUNIT_ASSERT_MESSAGE(stdStr1, stdStr1 == stdStr2)
 class TruckBorisDefaultConstructorTests: public CppUnit::TestFixture
@@ -505,7 +506,7 @@ class TruckBorisCppTests: public CppUnit::TestFixture
     STR_MESSASSERT(hp[2], std::string("/usr/include/xcb"));
     STR_MESSASSERT(hp[3], std::string("/usr/include/eina"));
   }
-  void headerParser_testParse()
+  void headerParser_testParsing()
   {
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_CLASS_SOURCE_FILE) );
@@ -515,11 +516,145 @@ class TruckBorisCppTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(classes.size() == 2 ); 
   
   }
+  void headerParser_testMethods()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_CLASS_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse() == true);
+    std::vector<TruckBoris::Function> functions;
+    functions = m_headerParser->getFunctions();
+    CPPUNIT_ASSERT(functions.size() == 2 );
+    STR_MESSASSERT(functions[0].getName(), std::string("isTrue"));
+  }
   CPPUNIT_TEST_SUITE(TruckBorisCppTests);
   CPPUNIT_TEST(headerParser_testInitializedHeaderParser);
   CPPUNIT_TEST(headerParser_testAddHeaderPath);
   CPPUNIT_TEST(headerParser_testAddHeadersPaths);
-  CPPUNIT_TEST(headerParser_testParse);
+  CPPUNIT_TEST(headerParser_testParsing);
+  CPPUNIT_TEST(headerParser_testMethods);
+  CPPUNIT_TEST_SUITE_END();
+};
+class TruckBorisScopeParsingTests: public CppUnit::TestFixture
+{
+  private:
+    TruckBoris::HeaderParser * m_headerParser;
+  public:
+  void setUp()
+  {
+    m_headerParser = NULL;
+    std::vector<std::string> hp;
+    hp.push_back(std::string("/usr/include"));
+    m_headerParser = new TruckBoris::HeaderParser(std::string(TEST_LIMIT_PARSING_SOURCE_FILE),hp);
+  }
+  void tearDown()
+  {
+    if(m_headerParser)
+    delete m_headerParser;
+  }
+  void headerParser_testParsingBasic()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse() == true);
+    CPPUNIT_ASSERT(m_headerParser->getFunctions().size() == 4 ); 
+    CPPUNIT_ASSERT(m_headerParser->getTypedefs().size() == 8 ); 
+  }
+  void headerParser_testTypedefs()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse(false) == true);
+    std::vector<TruckBoris::Typedef> t;
+    t = m_headerParser->getTypedefs();
+    STR_MESSASSERT(t[0].getName(), std::string("toto"));
+    STR_MESSASSERT(t[1].getName(), std::string("tomate"));
+    STR_MESSASSERT(t[2].getName(), std::string("kudamono"));
+    STR_MESSASSERT(t[3].getName(), std::string("equide"));
+    STR_MESSASSERT(t[4].getName(), std::string("aplume"));
+    STR_MESSASSERT(t[5].getName(), std::string("baka"));
+    STR_MESSASSERT(t[6].getName(), std::string("tabemono"));
+    STR_MESSASSERT(t[7].getName(), std::string("anInt"));
+  }
+  void headerParser_testFunctions()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse(false) == true);
+    std::vector<TruckBoris::Function> f;
+    f = m_headerParser->getFunctions();
+    STR_MESSASSERT(f[0].getName(), std::string("une_fonction"));
+    CPPUNIT_ASSERT(f[0].getParameters().size() == 2);
+    CPPUNIT_ASSERT(f[0].isMain() == false);
+    STR_MESSASSERT(f[1].getName(), std::string("pupute"));
+    CPPUNIT_ASSERT(f[1].getParameters().size() == 2);
+    CPPUNIT_ASSERT(f[1].isMain() == false);
+    STR_MESSASSERT(f[2].getName(), std::string("tato"));
+    CPPUNIT_ASSERT(f[2].getParameters().size() == 0);
+    CPPUNIT_ASSERT(f[2].isMain() == false);
+    STR_MESSASSERT(f[3].getName(), std::string("main"));
+    CPPUNIT_ASSERT(f[3].getParameters().size() == 2);
+    CPPUNIT_ASSERT(f[3].isMain() == true);
+  }
+  void headerParser_testMainFileFunctions()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
+    std::vector<TruckBoris::Function> f;
+    f = m_headerParser->getFunctions();
+    CPPUNIT_ASSERT(m_headerParser->getFunctions().size() == 2 ); 
+    //STR_MESSASSERT(f[0].getName(), std::string("tato"));
+    //CPPUNIT_ASSERT(f[0].getParameters().size() == 0);
+    //CPPUNIT_ASSERT(f[0].isMain() == false);
+    //STR_MESSASSERT(f[1].getName(), std::string("main"));
+    //CPPUNIT_ASSERT(f[1].getParameters().size() == 2);
+    //CPPUNIT_ASSERT(f[1].isMain() == true);
+  }
+  void headerParser_testMainFileTypedefs()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
+    std::vector<TruckBoris::Typedef> t;
+    t = m_headerParser->getTypedefs();
+    STR_MESSASSERT(t[0].getName(), std::string("anInt"));
+  }
+  void headerParser_testMainFileStructures()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
+    std::vector<TruckBoris::Structure> s;
+    s = m_headerParser->getStructures();
+    CPPUNIT_ASSERT(s.size() == 0);
+  }
+  void headerParser_testMainFileUnions()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
+    std::vector<TruckBoris::Union> u;
+    u = m_headerParser->getUnions();
+    CPPUNIT_ASSERT(u.size() == 0);
+  }
+  void headerParser_testMainFileEnums()
+  {
+    CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
+    STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
+    CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
+    std::vector<TruckBoris::Enum> e;
+    e = m_headerParser->getEnums();
+    CPPUNIT_ASSERT(e.size() == 0);
+  }
+  CPPUNIT_TEST_SUITE(TruckBorisScopeParsingTests);
+  CPPUNIT_TEST(headerParser_testParsingBasic);
+  CPPUNIT_TEST(headerParser_testTypedefs);
+  CPPUNIT_TEST(headerParser_testFunctions);
+  CPPUNIT_TEST(headerParser_testMainFileFunctions);
+  CPPUNIT_TEST(headerParser_testMainFileTypedefs);
+  CPPUNIT_TEST(headerParser_testMainFileStructures);
+  CPPUNIT_TEST(headerParser_testMainFileUnions);
+  CPPUNIT_TEST(headerParser_testMainFileEnums);
   CPPUNIT_TEST_SUITE_END();
 };
 #endif
