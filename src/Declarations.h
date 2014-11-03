@@ -4,6 +4,9 @@
 #include "clang/Lex/Lexer.h"
 #include <string>
 #include "Type.h"
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
 namespace TruckBoris {
   class Typedef
   {

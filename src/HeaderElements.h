@@ -6,6 +6,9 @@
 #include "Declarations.h"
 #include "Function.h"
 #include <iostream>
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
 namespace TruckBoris {
   class HeaderElements : public clang::ASTConsumer
   {

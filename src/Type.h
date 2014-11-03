@@ -2,6 +2,9 @@
 #define TYPE_H
 #include "clang/AST/AST.h"
 #include "string"
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
 namespace TruckBoris {
   class Type
   {

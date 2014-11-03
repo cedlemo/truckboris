@@ -1,6 +1,6 @@
 #ifndef TRUCKBORISTESTS_H
 #define TRUCKBORISTESTS_H
-#include "HeaderParser.h"
+#include "../src/HeaderParser.h"
 #include <cppunit/extensions/HelperMacros.h>
 #include <string>
 #include <vector>

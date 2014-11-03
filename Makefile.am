@@ -1,7 +1,9 @@
 CXX = clang++
-AUTOMAKE_OPTIONS = 1.4 foreign
-MAINTAINERCLEANFILES = Makefile.in aclocal.m4 config.h.in configure depcomp install-sh missing compile
-#RTTIFLAG = #-fno-rtti
+MAINTAINERCLEANFILES = \
+Makefile.in aclocal.m4 config.h.in configure \
+depcomp install-sh missing compile config.sub \
+config.guess ltmain.sh
+
 CLANGCXXFLAGS := -I$(shell @LLVMCONFIG@ --src-root)/tools/clang/include \
                 -I$(shell @LLVMCONFIG@ --obj-root)/tools/clang/include \
                 $(shell @LLVMCONFIG@ --cxxflags) -fcxx-exceptions
@@ -24,10 +26,21 @@ CLANGLIBS = -lclangTooling\
         -lclangLex\
         -lclangBasic\
         @LLVMSYSLIBS@
-TEST= truckBorisTests
+TEST= tests/truckBorisTests
 check_PROGRAMS = $(TEST) 
-# TODO set the files sources and test this shit
-truckBorisTests_SOURCES = Declarations.cpp  Function.cpp  HeaderElements.cpp  HeaderParser.cpp  TruckBorisTest.cpp  Type.cpp 
-truckBorisTests_CXXFLAGS = $(CPPUNIT_FLAGS) $(CLANGCXXFLAGS) 
-truckBorisTests_LDFLAGS = $(CPPUNIT_LIBS) -ldl @LLVMLDFLAGS@ 
-truckBorisTests_LDADD = $(CLANGLIBS) @LLVMLIBS@ 
+tests_truckBorisTests_SOURCES = src/Declarations.cpp  src/Function.cpp  src/HeaderElements.cpp  src/HeaderParser.cpp  tests/TruckBorisTest.cpp  src/Type.cpp 
+tests_truckBorisTests_CXXFLAGS = $(CPPUNIT_FLAGS) $(CLANGCXXFLAGS) 
+tests_truckBorisTests_LDFLAGS = $(CPPUNIT_LIBS) -ldl @LLVMLDFLAGS@ 
+tests_truckBorisTests_LDADD = $(CLANGLIBS) @LLVMLIBS@
+
+lib_LTLIBRARIES = src/libtruckboris.la
+src_libtruckboris_la_SOURCES = src/Declarations.cpp src/Function.cpp src/HeaderElements.cpp src/HeaderParser.cpp src/Type.cpp
+src_libtruckboris_la_CXXFLAGS = $(CPPUNIT_FLAGS) $(CLANGCXXFLAGS) 
+src_libtruckboris_la_LDFLAGS = $(CPPUNIT_LIBS) -ldl @LLVMLDFLAGS@ -shared -version-info 1:0:0
+src_libtruckboris_la_LIBADD = $(CLANGLIBS) @LLVMLIBS@
+
+pkginclude_HEADERS = src/Declarations.h  src/Function.h  src/HeaderElements.h  src/HeaderParser.h  src/Type.h
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = truckboris.pc
+

@@ -1,6 +1,5 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
-#include "HeaderParser.h"
 #include "TruckBorisTests.h"
 
 #include <cppunit/extensions/HelperMacros.h>

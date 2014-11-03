@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+Name: Truckboris
+Description: A little C++ library based on Clang for parsing C header files. 
+URL: https://github.com/cedlemo/truckboris 
+Version: @PACKAGE_VERSION@
+#Requires:
+Cflags: -I${includedir}/truckboris @LLVMCXXFLAGS@
+Libs: -L${libdir} -ltruckboris
+
