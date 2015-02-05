@@ -12,18 +12,18 @@ namespace TruckBoris {
     m_function = fct.m_function;
     return *this;
   }
-  void Function::setPtr(clang::FunctionDecl * fn) //for ruby interface
+/*  void Function::setPtr(clang::FunctionDecl * fn) //for ruby interface
   {
     m_function = fn;
   }
   clang::FunctionDecl * Function::getPtr() const
   {
     return m_function; 
-  }
+  }*/
   std::string Function::getName() const
   {
     if(m_function)
-      return m_function->getDeclName().getAsString();
+      return m_function->getNameInfo().getAsString();
     else
       return std::string();
   }

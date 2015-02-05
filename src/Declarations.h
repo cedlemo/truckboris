@@ -15,8 +15,8 @@ namespace TruckBoris {
       Typedef(clang::TypedefDecl * var);
       ~Typedef() {}
       Typedef& Equals(const Typedef& tpd);
-      void setPtr(clang::TypedefDecl * var); //for ruby interface
-      clang::TypedefDecl * getPtr() const; //for ruby interface
+//      void setPtr(clang::TypedefDecl * var); //for ruby interface
+//      clang::TypedefDecl * getPtr() const; //for ruby interface
       std::string getName() const;
       Type getType() const;
       std::string getRaw(clang::SourceManager &sm, const clang::LangOptions& lopt) const;
@@ -31,8 +31,8 @@ namespace TruckBoris {
       Parameter(clang::ParmVarDecl * var);
       ~Parameter() {}
       Parameter& Equals(const Parameter& pdc);
-      void setPtr(clang::ParmVarDecl * var); //for ruby interface
-      clang::ParmVarDecl * getPtr() const; //for ruby interface
+//      void setPtr(clang::ParmVarDecl * var); //for ruby interface
+//      clang::ParmVarDecl * getPtr() const; //for ruby interface
       std::string getName() const;
       Type getType() const;
     private:
@@ -45,8 +45,8 @@ namespace TruckBoris {
       Field(clang::FieldDecl * var);
       ~Field() {}
       Field& Equals(const Field& fld);
-      void setPtr(clang::FieldDecl * var); //for ruby interface
-      clang::FieldDecl * getPtr() const; //for ruby interface
+//      void setPtr(clang::FieldDecl * var); //for ruby interface
+//      clang::FieldDecl * getPtr() const; //for ruby interface
       std::string getName() const;
       Type getType() const;
     private:
@@ -57,8 +57,8 @@ namespace TruckBoris {
     public:
       TagDeclaration(clang::TagDecl * var);
       ~TagDeclaration(){}
-      void setPtr(clang::TagDecl * var); //for ruby interface
-      clang::TagDecl * getPtr() const; //for ruby interface
+//      void setPtr(clang::TagDecl * var); //for ruby interface
+//      clang::TagDecl * getPtr() const; //for ruby interface
       std::string getName() const;
       bool hasNameForLinkage()const;
       bool hasLinkage() const;

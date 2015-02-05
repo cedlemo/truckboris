@@ -11,11 +11,11 @@ namespace TruckBoris {
   {
     public:
       HeaderParser();
-      HeaderParser( const std::string&  sourceFile, const std::vector<std::string>& headersPaths);
+      HeaderParser( std::string sourceFile, std::vector<std::string> headersPaths);
       ~HeaderParser();
-      bool addSourceFile(const std::string& fileName);
-      void addSearchPath(const std::string& pathName);
-      void addSearchPaths(const std::vector<std::string>& pathNames);
+      bool addSourceFile( std::string fileName);
+      void addSearchPath( std::string pathName);
+      void addSearchPaths(std::vector<std::string> pathNames);
       bool parse(bool mainFile = false);
       clang::LangOptions& getLangOpts ();
       clang::SourceManager&   getSourceManager() const;

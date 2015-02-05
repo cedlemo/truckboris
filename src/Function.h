@@ -18,8 +18,8 @@ namespace TruckBoris {
       std::string getName() const; 
       bool isMain() const;
       Type getReturn() const;
-      void setPtr(clang::FunctionDecl * fn); //for ruby interface
-      clang::FunctionDecl * getPtr() const; //for ruby interface
+ //     void setPtr(clang::FunctionDecl * fn); //for ruby interface
+ //     clang::FunctionDecl * getPtr() const; //for ruby interface
       int getParamsNumber() const;
       std::vector<Parameter> getParameters() const;
       clang::ParmVarDecl * getParameter(int i) const; //for ruby interface

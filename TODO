@@ -24,5 +24,7 @@ and http://www.ibm.com/developerworks/linux/library/os-createcompilerllvm2/index
 done create tests for those methods
 done update swig lib
 done add option to force parsing on only main file:
+TODO don't make the classes rely on the HeaderParser class, fill all the other classes with strings at the parsing
+TODO remove the set_ptr get_ptr methods
 TODO find a way in order to get Decl from typedef -> Type
 TODO handle class and methods 

@@ -25,7 +25,7 @@ namespace TruckBoris {
     m_ciInitialized = true;
     m_headerElements = NULL;
   }
-  HeaderParser::HeaderParser(const std::string& sourceFile, const std::vector<std::string>& headersPaths)
+  HeaderParser::HeaderParser( std::string sourceFile, std::vector<std::string> headersPaths)
   {
     m_source = std::string();
     m_headersPaths = std::vector<std::string>();
@@ -49,7 +49,7 @@ namespace TruckBoris {
     //delete m_ci;
     //delete m_headerElements;
   }
-  bool HeaderParser::addSourceFile(const std::string& fileName)
+  bool HeaderParser::addSourceFile( std::string fileName)
   {
     if(!m_ciInitialized)
       return false; // TODO add an error message ?
@@ -68,7 +68,7 @@ namespace TruckBoris {
 
     return true;   
   }
-  void HeaderParser::addSearchPath(const std::string& pathName)
+  void HeaderParser::addSearchPath( std::string pathName)
   {
     if (std::find(m_headersPaths.begin(), m_headersPaths.end(), pathName) == m_headersPaths.end())
     {
@@ -79,7 +79,7 @@ namespace TruckBoris {
       m_headersPaths.push_back(pathName);
     }
   }
-  void HeaderParser::addSearchPaths(const std::vector<std::string>& pathNames)
+  void HeaderParser::addSearchPaths( std::vector<std::string> pathNames)
   {
     std::vector<std::string>::const_iterator it;
     for( it = pathNames.begin(); it != pathNames.end(); ++it)

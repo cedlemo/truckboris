@@ -5,19 +5,19 @@ namespace TruckBoris {
   {}
   Typedef::Typedef(clang::TypedefDecl * var) : m_var(var)
   {}
-  void Typedef::setPtr(clang::TypedefDecl * var) //for ruby interface
+/*  void Typedef::setPtr(clang::TypedefDecl * var) //for ruby interface
   {
     m_var = var;
-  }
+  }*/
   Typedef& Typedef::Equals(const Typedef& tpd)
   {
     m_var = tpd.m_var;
     return *this;
   }
-  clang::TypedefDecl * Typedef::getPtr() const//for ruby interface
+/*  clang::TypedefDecl * Typedef::getPtr() const//for ruby interface
   {
     return m_var;
-  }
+  }*/
   std::string Typedef::getName() const
   {
     if(m_var)
@@ -50,14 +50,14 @@ namespace TruckBoris {
     m_var = pdc.m_var;
     return *this;
   }
-  void Parameter::setPtr(clang::ParmVarDecl * var) //for ruby interface
+/*  void Parameter::setPtr(clang::ParmVarDecl * var) //for ruby interface
   {
     m_var = var;
   }
   clang::ParmVarDecl * Parameter::getPtr() const //for ruby interface
   {
     return m_var;
-  }
+  }*/
   std::string Parameter::getName() const
   {
     if(m_var)
@@ -82,14 +82,14 @@ namespace TruckBoris {
     m_var = fld.m_var;
     return *this;
   }
-  void Field::setPtr(clang::FieldDecl * var) //for ruby interface
+/*  void Field::setPtr(clang::FieldDecl * var) //for ruby interface
   {
     m_var = var;
   }
   clang::FieldDecl * Field::getPtr() const //for ruby interface
   {
     return m_var;
-  }
+  }*/
   std::string Field::getName() const
   {
     if(m_var)
@@ -106,14 +106,14 @@ namespace TruckBoris {
   }
   TagDeclaration::TagDeclaration(clang::TagDecl *var): m_var(var)
   {}
-  void TagDeclaration::setPtr(clang::TagDecl *var)//for ruby interface
+/*  void TagDeclaration::setPtr(clang::TagDecl *var)//for ruby interface
   {
     m_var = var;
   }
   clang::TagDecl * TagDeclaration::getPtr() const//for ruby interface
   {
     return m_var;
-  }
+  }*/
   std::string TagDeclaration::getName() const
   {
     if(m_var)
@@ -351,14 +351,14 @@ namespace TruckBoris {
     m_constant = cst.m_constant;
     return *this;
   }
-  void EnumConstant::setPtr(clang::EnumConstantDecl * constant)
+/*  void EnumConstant::setPtr(clang::EnumConstantDecl * constant)
   {
     m_constant = constant;
   }
   clang::EnumConstantDecl * EnumConstant::getPtr() const
   {
     return m_constant;
-  }
+  }*/
   std::string EnumConstant::getName() const
   {
     return m_constant->getNameAsString();
