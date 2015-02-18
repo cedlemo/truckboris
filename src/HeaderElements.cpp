@@ -54,6 +54,16 @@ namespace TruckBoris {
       }
     }
   }
+  int
+  HeaderElements::nbFunctions() const
+  {
+    return m_functions.size();
+  }
+  Function
+  HeaderElements::getFunction(int i) const
+  {
+    return m_functions[i];
+  }
   std::vector<Function> 
   HeaderElements::getFunctions() const
   {

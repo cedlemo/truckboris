@@ -21,6 +21,8 @@ namespace TruckBoris {
 
       virtual bool HandleTopLevelDecl( clang::DeclGroupRef d);
       virtual void HandleTagDeclDefinition( clang::TagDecl * d);
+      int nbFunctions() const;
+      Function getFunction(int) const;
       std::vector<Function> getFunctions() const;
       std::vector<Typedef> getTypedefs() const;
       std::vector<Structure> getStructures() const;

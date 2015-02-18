@@ -19,6 +19,8 @@ namespace TruckBoris {
       bool parse(bool mainFile = false);
       clang::LangOptions& getLangOpts ();
       clang::SourceManager&   getSourceManager() const;
+      int nbFunctions() const;
+      Function getFunction(int) const;
       std::vector<Function> getFunctions() const;
       std::vector<Structure> getStructures() const;
       std::vector<Union> getUnions() const;

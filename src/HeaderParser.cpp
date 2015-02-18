@@ -159,6 +159,27 @@ namespace TruckBoris {
   {
     return m_ci.getSourceManager();
   }
+  int 
+  HeaderParser::nbFunctions() const
+  {
+    if(m_source == std::string())
+      return 0;
+    else
+      return m_headerElements->nbFunctions();
+  }
+  Function
+  HeaderParser::getFunction(int i) const
+  {
+    if(m_source == std::string())
+      return Function();
+    int j = i;
+    int max = m_headerElements->nbFunctions() - 1;
+    if (i < 0)
+      j = 0;
+    else if ( i > max)
+      j = max;
+    return m_headerElements->getFunction(j);
+  }
   std::vector<Function> 
   HeaderParser::getFunctions() const
   {
