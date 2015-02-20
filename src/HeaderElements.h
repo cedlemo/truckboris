@@ -24,9 +24,17 @@ namespace TruckBoris {
       int nbFunctions() const;
       Function getFunction(int) const;
       std::vector<Function> getFunctions() const;
+      int nbTypedefs() const;
+      Typedef getTypedef(int) const;
       std::vector<Typedef> getTypedefs() const;
+      int nbStructures() const;
+      Structure getStructure(int) const;
       std::vector<Structure> getStructures() const;
+      int nbUnions() const;
+      Union getUnion(int) const;
       std::vector<Union> getUnions() const;
+      int nbEnums() const;
+      Enum getEnum(int) const;
       std::vector<Enum> getEnums() const;
       std::vector<TagDeclaration> getClasses() const;
     private:

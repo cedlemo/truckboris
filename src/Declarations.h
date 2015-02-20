@@ -55,6 +55,7 @@ namespace TruckBoris {
   class TagDeclaration
   {
     public:
+      TagDeclaration();
       TagDeclaration(clang::TagDecl * var);
       ~TagDeclaration(){}
 //      void setPtr(clang::TagDecl * var); //for ruby interface

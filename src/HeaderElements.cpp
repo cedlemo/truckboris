@@ -69,20 +69,60 @@ namespace TruckBoris {
   {
     return m_functions;
   }
+  int
+  HeaderElements::nbTypedefs() const
+  {
+    return m_typedefs.size();
+  }
+  Typedef
+  HeaderElements::getTypedef(int i) const
+  {
+    return m_typedefs[i];
+  }
   std::vector<Typedef>
   HeaderElements::getTypedefs() const
   {
     return m_typedefs;
+  }
+  int
+  HeaderElements::nbStructures() const
+  {
+    return m_structures.size();
+  }
+  Structure
+  HeaderElements::getStructure(int i) const
+  {
+    return m_structures[i];
   }
   std::vector<Structure>
   HeaderElements::getStructures() const
   {
     return m_structures;
   }
+  int
+  HeaderElements::nbUnions() const
+  {
+    return m_unions.size();
+  }
+  Union
+  HeaderElements::getUnion(int i) const
+  {
+    return m_unions[i];
+  }
   std::vector<Union>
   HeaderElements::getUnions() const
   {
     return m_unions;
+  }
+  int
+  HeaderElements::nbEnums() const
+  {
+    return m_enums.size();
+  }
+  Enum
+  HeaderElements::getEnum(int i) const
+  {
+    return m_enums[i];
   }
   std::vector<Enum>
   HeaderElements::getEnums() const

@@ -188,6 +188,27 @@ namespace TruckBoris {
 
     return m_headerElements->getFunctions();
   }
+  int 
+  HeaderParser::nbStructures() const
+  {
+    if(m_source == std::string())
+      return 0;
+    else
+      return m_headerElements->nbStructures();
+  }
+  Structure
+  HeaderParser::getStructure(int i) const
+  {
+    if(m_source == std::string())
+      return Structure();
+    int j = i;
+    int max = m_headerElements->nbStructures() - 1;
+    if (i < 0)
+      j = 0;
+    else if ( i > max)
+      j = max;
+    return m_headerElements->getStructure(j);
+  }
   std::vector<Structure>
   HeaderParser::getStructures() const
   {
@@ -195,6 +216,27 @@ namespace TruckBoris {
       return std::vector<Structure>();
 
     return m_headerElements->getStructures();
+  }
+  int 
+  HeaderParser::nbEnums() const
+  {
+    if(m_source == std::string())
+      return 0;
+    else
+      return m_headerElements->nbEnums();
+  }
+  Enum
+  HeaderParser::getEnum(int i) const
+  {
+    if(m_source == std::string())
+      return Enum();
+    int j = i;
+    int max = m_headerElements->nbEnums() - 1;
+    if (i < 0)
+      j = 0;
+    else if ( i > max)
+      j = max;
+    return m_headerElements->getEnum(j);
   }
   std::vector<Enum>
   HeaderParser::getEnums() const
@@ -204,6 +246,27 @@ namespace TruckBoris {
 
     return m_headerElements->getEnums();
   }
+  int 
+  HeaderParser::nbUnions() const
+  {
+    if(m_source == std::string())
+      return 0;
+    else
+      return m_headerElements->nbUnions();
+  }
+  Union
+  HeaderParser::getUnion(int i) const
+  {
+    if(m_source == std::string())
+      return Union();
+    int j = i;
+    int max = m_headerElements->nbUnions() - 1;
+    if (i < 0)
+      j = 0;
+    else if ( i > max)
+      j = max;
+    return m_headerElements->getUnion(j);
+  }
   std::vector<Union>
   HeaderParser::getUnions() const
   {
@@ -211,6 +274,27 @@ namespace TruckBoris {
       return std::vector<Union>();
 
     return m_headerElements->getUnions();
+  }
+  int 
+  HeaderParser::nbTypedefs() const
+  {
+    if(m_source == std::string())
+      return 0;
+    else
+      return m_headerElements->nbTypedefs();
+  }
+  Typedef
+  HeaderParser::getTypedef(int i) const
+  {
+    if(m_source == std::string())
+      return Typedef();
+    int j = i;
+    int max = m_headerElements->nbTypedefs() - 1;
+    if (i < 0)
+      j = 0;
+    else if ( i > max)
+      j = max;
+    return m_headerElements->getTypedef(j);
   }
   std::vector<Typedef>
   HeaderParser::getTypedefs() const

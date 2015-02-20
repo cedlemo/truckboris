@@ -104,6 +104,8 @@ namespace TruckBoris {
     else
       return Type();
   }
+  TagDeclaration::TagDeclaration(): m_var(NULL)
+  {}
   TagDeclaration::TagDeclaration(clang::TagDecl *var): m_var(var)
   {}
 /*  void TagDeclaration::setPtr(clang::TagDecl *var)//for ruby interface
@@ -162,6 +164,10 @@ namespace TruckBoris {
     m_var = tag.m_var;
     return *this;
   }
+  Structure::Structure(): TagDeclaration()
+  {
+    m_tagType = std::string("structure");
+  }
   Structure::Structure(clang::TagDecl * var) : TagDeclaration(var)
   {
     m_tagType = std::string("structure");
@@ -215,6 +221,10 @@ namespace TruckBoris {
       i++;
     }
     return i;
+  }
+  Union::Union() : TagDeclaration()
+  {
+    m_tagType = std::string("union");
   }
   Union::Union(clang::TagDecl * var) : TagDeclaration(var)
   {
@@ -270,7 +280,7 @@ namespace TruckBoris {
     }
     return i;
   }
-  Enum::Enum(): TagDeclaration(NULL)
+  Enum::Enum(): TagDeclaration()
   {
     m_tagType = std::string("enum");
   }
