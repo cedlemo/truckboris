@@ -62,7 +62,8 @@ namespace TruckBoris {
     }
     return params;
   }
-  clang::ParmVarDecl * Function::getParameter(int i) const //for ruby interface
+  Parameter
+  Function::getParameter(int i) const //for ruby interface
   {
     if(!m_function)
       return NULL;
@@ -75,7 +76,7 @@ namespace TruckBoris {
     else
       j = i;
 
-    return m_function->getParamDecl(j);
+    return Parameter(m_function->getParamDecl(j));
   }
   std::string Function::getRaw(clang::SourceManager &sm, const clang::LangOptions& lopt) const
   {
