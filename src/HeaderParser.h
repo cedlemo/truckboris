@@ -29,7 +29,6 @@ namespace TruckBoris {
       Enum getEnum(int) const;
       int nbTypedefs() const;
       Typedef getTypedef(int) const;
-      std::vector<Typedef> getTypedefs() const;
       std::string getSourceFile() const;
       std::vector<std::string> getHeadersPaths() const;
       std::vector<TagDeclaration> getClasses() const;

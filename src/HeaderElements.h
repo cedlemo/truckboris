@@ -25,7 +25,6 @@ namespace TruckBoris {
       Function getFunction(int) const;
       int nbTypedefs() const;
       Typedef getTypedef(int) const;
-      std::vector<Typedef> getTypedefs() const;
       int nbStructures() const;
       Structure getStructure(int) const;
       int nbUnions() const;

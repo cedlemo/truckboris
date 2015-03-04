@@ -264,14 +264,6 @@ namespace TruckBoris {
       j = max;
     return m_headerElements->getTypedef(j);
   }
-  std::vector<Typedef>
-  HeaderParser::getTypedefs() const
-  {
-    if (m_source == std::string())
-      return std::vector<Typedef>();
-
-    return m_headerElements->getTypedefs();
-  }
   std::string
   HeaderParser::getSourceFile() const
   {

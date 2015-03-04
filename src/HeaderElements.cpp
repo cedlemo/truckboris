@@ -74,11 +74,6 @@ namespace TruckBoris {
   {
     return m_typedefs[i];
   }
-  std::vector<Typedef>
-  HeaderElements::getTypedefs() const
-  {
-    return m_typedefs;
-  }
   int
   HeaderElements::nbStructures() const
   {

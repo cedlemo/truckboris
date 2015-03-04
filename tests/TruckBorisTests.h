@@ -259,14 +259,12 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Typedef> t;
-    t = m_headerParser->getTypedefs();
-    STR_MESSASSERT(t[0].getName(), std::string("toto"));
-    STR_MESSASSERT(t[1].getName(), std::string("tomate"));
-    STR_MESSASSERT(t[2].getName(), std::string("kudamono"));
-    STR_MESSASSERT(t[3].getName(), std::string("equide"));
-    STR_MESSASSERT(t[4].getName(), std::string("aplume"));
-    STR_MESSASSERT(t[5].getName(), std::string("baka"));
+    STR_MESSASSERT(m_headerParser->getTypedef(0).getName(), std::string("toto"));
+    STR_MESSASSERT(m_headerParser->getTypedef(1).getName(), std::string("tomate"));
+    STR_MESSASSERT(m_headerParser->getTypedef(2).getName(), std::string("kudamono"));
+    STR_MESSASSERT(m_headerParser->getTypedef(3).getName(), std::string("equide"));
+    STR_MESSASSERT(m_headerParser->getTypedef(4).getName(), std::string("aplume"));
+    STR_MESSASSERT(m_headerParser->getTypedef(5).getName(), std::string("baka"));
   }
   void headerParser_testFunctions()
   {
@@ -357,26 +355,24 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Typedef> t;
-    t = m_headerParser->getTypedefs();
     //typedef int toto;
-    STR_MESSASSERT(t[0].getType().getName(), std::string("int"));
-    CPPUNIT_ASSERT(t[0].getType().isCanonical() == true );  
+    STR_MESSASSERT(m_headerParser->getTypedef(0).getType().getName(), std::string("int"));
+    CPPUNIT_ASSERT(m_headerParser->getTypedef(0).getType().isCanonical() == true );  
     //struct _poire {
     //  int g;
     //  tomate rouge;
     //};
-    STR_MESSASSERT(t[2].getType().getName(), std::string("struct _poire"));
-    STR_MESSASSERT(t[2].getType().getClangTypeClassName(), std::string("Elaborated"));  
-    CPPUNIT_ASSERT(t[2].getType().isCanonical() == false ); //ok it is not a canonical QualType 
-    STR_MESSASSERT(t[2].getType().getCanonicalType().getName(), std::string("struct _poire"));
-    CPPUNIT_ASSERT(t[2].getType().getCanonicalType().isCanonical() == true);
-    STR_MESSASSERT(t[2].getType().getCanonicalType().getClangTypeClassName(), std::string("Record"));
+    STR_MESSASSERT(m_headerParser->getTypedef(2).getType().getName(), std::string("struct _poire"));
+    STR_MESSASSERT(m_headerParser->getTypedef(2).getType().getClangTypeClassName(), std::string("Elaborated"));  
+    CPPUNIT_ASSERT(m_headerParser->getTypedef(2).getType().isCanonical() == false ); //ok it is not a canonical QualType 
+    STR_MESSASSERT(m_headerParser->getTypedef(2).getType().getCanonicalType().getName(), std::string("struct _poire"));
+    CPPUNIT_ASSERT(m_headerParser->getTypedef(2).getType().getCanonicalType().isCanonical() == true);
+    STR_MESSASSERT(m_headerParser->getTypedef(2).getType().getCanonicalType().getClangTypeClassName(), std::string("Record"));
     //typedef kudamono tabemono;
-    STR_MESSASSERT(t[6].getType().getName(), std::string("kudamono"));
-    STR_MESSASSERT(t[6].getType().getClangTypeClassName(), std::string("Typedef"));
-    STR_MESSASSERT(t[6].getType().getCanonicalType().getName(), std::string("struct _poire"));
-    STR_MESSASSERT(t[6].getType().getCanonicalType().getClangTypeClassName(), std::string("Record"));
+    STR_MESSASSERT(m_headerParser->getTypedef(6).getType().getName(), std::string("kudamono"));
+    STR_MESSASSERT(m_headerParser->getTypedef(6).getType().getClangTypeClassName(), std::string("Typedef"));
+    STR_MESSASSERT(m_headerParser->getTypedef(6).getType().getCanonicalType().getName(), std::string("struct _poire"));
+    STR_MESSASSERT(m_headerParser->getTypedef(6).getType().getCanonicalType().getClangTypeClassName(), std::string("Record"));
     //std::vector<TruckBoris::Structure> s;
     //s = m_headerParser->getStructures();
     std::vector<TruckBoris::Field> f;
@@ -533,23 +529,21 @@ class TruckBorisScopeParsingTests: public CppUnit::TestFixture
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
     CPPUNIT_ASSERT(m_headerParser->nbFunctions() == 4 ); 
-    CPPUNIT_ASSERT(m_headerParser->getTypedefs().size() == 8 ); 
+    CPPUNIT_ASSERT(m_headerParser->nbTypedefs() == 8 ); 
   }
   void headerParser_testTypedefs()
   {
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse(false) == true);
-    std::vector<TruckBoris::Typedef> t;
-    t = m_headerParser->getTypedefs();
-    STR_MESSASSERT(t[0].getName(), std::string("toto"));
-    STR_MESSASSERT(t[1].getName(), std::string("tomate"));
-    STR_MESSASSERT(t[2].getName(), std::string("kudamono"));
-    STR_MESSASSERT(t[3].getName(), std::string("equide"));
-    STR_MESSASSERT(t[4].getName(), std::string("aplume"));
-    STR_MESSASSERT(t[5].getName(), std::string("baka"));
-    STR_MESSASSERT(t[6].getName(), std::string("tabemono"));
-    STR_MESSASSERT(t[7].getName(), std::string("anInt"));
+    STR_MESSASSERT(m_headerParser->getTypedef(0).getName(), std::string("toto"));
+    STR_MESSASSERT(m_headerParser->getTypedef(1).getName(), std::string("tomate"));
+    STR_MESSASSERT(m_headerParser->getTypedef(2).getName(), std::string("kudamono"));
+    STR_MESSASSERT(m_headerParser->getTypedef(3).getName(), std::string("equide"));
+    STR_MESSASSERT(m_headerParser->getTypedef(4).getName(), std::string("aplume"));
+    STR_MESSASSERT(m_headerParser->getTypedef(5).getName(), std::string("baka"));
+    STR_MESSASSERT(m_headerParser->getTypedef(6).getName(), std::string("tabemono"));
+    STR_MESSASSERT(m_headerParser->getTypedef(7).getName(), std::string("anInt"));
   }
   void headerParser_testFunctions()
   {
@@ -587,9 +581,7 @@ class TruckBorisScopeParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
-    std::vector<TruckBoris::Typedef> t;
-    t = m_headerParser->getTypedefs();
-    STR_MESSASSERT(t[0].getName(), std::string("anInt"));
+    STR_MESSASSERT(m_headerParser->getTypedef(0).getName(), std::string("anInt"));
   }
   void headerParser_testMainFileStructures()
   {
