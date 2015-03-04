@@ -41,26 +41,12 @@ namespace TruckBoris {
     else
       return Type();
   }
-  int Function::getParamsNumber() const
+  int Function::nbParameters() const
   {
     if(m_function)
       return m_function->getNumParams();
     else
       return 0;
-  }
-  std::vector<Parameter>
-  Function::getParameters() const
-  {
-    std::vector<Parameter> params;
-    if(!m_function)
-      return params;
-
-    for(int i=0; i < m_function->getNumParams(); i++)
-    {
-      Parameter p(m_function->getParamDecl(i));
-      params.push_back(p);
-    }
-    return params;
   }
   Parameter
   Function::getParameter(int i) const //for ruby interface
