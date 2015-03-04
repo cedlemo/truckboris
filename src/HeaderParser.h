@@ -21,7 +21,6 @@ namespace TruckBoris {
       clang::SourceManager&   getSourceManager() const;
       int nbFunctions() const;
       Function getFunction(int) const;
-      std::vector<Function> getFunctions() const;
       int nbStructures() const;
       Structure getStructure(int) const;
       int nbUnions() const;

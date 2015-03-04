@@ -64,11 +64,6 @@ namespace TruckBoris {
   {
     return m_functions[i];
   }
-  std::vector<Function> 
-  HeaderElements::getFunctions() const
-  {
-    return m_functions;
-  }
   int
   HeaderElements::nbTypedefs() const
   {

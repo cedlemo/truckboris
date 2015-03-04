@@ -180,14 +180,6 @@ namespace TruckBoris {
       j = max;
     return m_headerElements->getFunction(j);
   }
-  std::vector<Function> 
-  HeaderParser::getFunctions() const
-  {
-    if (m_source == std::string())
-      return std::vector<Function>(); 
-
-    return m_headerElements->getFunctions();
-  }
   int 
   HeaderParser::nbStructures() const
   {

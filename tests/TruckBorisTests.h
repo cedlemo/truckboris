@@ -277,44 +277,40 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Function> f;
-    f = m_headerParser->getFunctions();
-    STR_MESSASSERT(f[0].getName(), std::string("une_fonction"));
-    CPPUNIT_ASSERT(f[0].getParameters().size() == 2);
-    CPPUNIT_ASSERT(f[0].isMain() == false);
-    STR_MESSASSERT(f[1].getName(), std::string("pupute"));
-    CPPUNIT_ASSERT(f[1].getParameters().size() == 2);
-    CPPUNIT_ASSERT(f[1].isMain() == false);
-    STR_MESSASSERT(f[2].getName(), std::string("fonction_vide"));
-    CPPUNIT_ASSERT(f[2].getParameters().size() == 0);
-    CPPUNIT_ASSERT(f[2].isMain() == false);
-    STR_MESSASSERT(f[3].getName(), std::string("main"));
-    CPPUNIT_ASSERT(f[3].getParameters().size() == 2);
-    CPPUNIT_ASSERT(f[3].isMain() == true);
+    STR_MESSASSERT(m_headerParser->getFunction(0).getName(), std::string("une_fonction"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(0).getParameters().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getFunction(0).isMain() == false);
+    STR_MESSASSERT(m_headerParser->getFunction(1).getName(), std::string("pupute"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(1).getParameters().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getFunction(1).isMain() == false);
+    STR_MESSASSERT(m_headerParser->getFunction(2).getName(), std::string("fonction_vide"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(2).getParameters().size() == 0);
+    CPPUNIT_ASSERT(m_headerParser->getFunction(2).isMain() == false);
+    STR_MESSASSERT(m_headerParser->getFunction(3).getName(), std::string("main"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(3).getParameters().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getFunction(3).isMain() == true);
   }
   void headerParser_testParameters()
   {
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Function> f;
-    f = m_headerParser->getFunctions();
-    STR_MESSASSERT(f[0].getName(), std::string("une_fonction"));
-    CPPUNIT_ASSERT(f[0].getParameters().size() == 2);
-    STR_MESSASSERT(f[1].getName(), std::string("pupute"));
-    CPPUNIT_ASSERT(f[1].getParameters().size() == 2);
-    STR_MESSASSERT(f[2].getName(), std::string("fonction_vide"));
-    CPPUNIT_ASSERT(f[2].getParameters().size() == 0);
-    STR_MESSASSERT(f[3].getName(), std::string("main"));
-    CPPUNIT_ASSERT(f[3].getParameters().size() == 2);
+    STR_MESSASSERT(m_headerParser->getFunction(0).getName(), std::string("une_fonction"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(0).getParameters().size() == 2);
+    STR_MESSASSERT(m_headerParser->getFunction(1).getName(), std::string("pupute"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(1).getParameters().size() == 2);
+    STR_MESSASSERT(m_headerParser->getFunction(2).getName(), std::string("fonction_vide"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(2).getParameters().size() == 0);
+    STR_MESSASSERT(m_headerParser->getFunction(3).getName(), std::string("main"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(3).getParameters().size() == 2);
     std::vector<TruckBoris::Parameter> p;
-    p = f[0].getParameters();
+    p = m_headerParser->getFunction(0).getParameters();
     STR_MESSASSERT(p[0].getName(), std::string("arg1")); 
     STR_MESSASSERT(p[1].getName(), std::string("arg2")); 
-    p = f[1].getParameters(); 
+    p = m_headerParser->getFunction(1).getParameters(); 
     STR_MESSASSERT(p[0].getName(), std::string("")); 
     STR_MESSASSERT(p[1].getName(), std::string("")); 
-    p = f[3].getParameters();
+    p = m_headerParser->getFunction(3).getParameters();
     STR_MESSASSERT(p[0].getName(), std::string("argc")); 
     STR_MESSASSERT(p[1].getName(), std::string("argv")); 
   }
@@ -413,13 +409,11 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     STR_MESSASSERT(f[1].getType().getName(), std::string("kudamono"));
     CPPUNIT_ASSERT(f[1].getType().isCanonical() == false);
     STR_MESSASSERT(f[1].getType().getCanonicalType().getName(), std::string("struct _poire"));
-    std::vector<TruckBoris::Function> fn;
-    fn = m_headerParser->getFunctions();
     std::vector<TruckBoris::Parameter> p;
-    p = fn[0].getParameters();
+    p = m_headerParser->getFunction(0).getParameters();
     STR_MESSASSERT(p[0].getType().getName(), std::string("int"));
     CPPUNIT_ASSERT(p[0].getType().isCanonical() == true);
-    p = fn[1].getParameters();
+    p = m_headerParser->getFunction(1).getParameters();
     STR_MESSASSERT(p[0].getType().getName(), std::string("tomate *"));
     CPPUNIT_ASSERT(p[0].getType().isCanonical() == false);
     STR_MESSASSERT(p[0].getType().getCanonicalType().getName(), std::string("tomate *"));
@@ -513,10 +507,8 @@ class TruckBorisCppTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_CLASS_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Function> functions;
-    functions = m_headerParser->getFunctions();
-    CPPUNIT_ASSERT(functions.size() == 2 );
-    STR_MESSASSERT(functions[0].getName(), std::string("isTrue"));
+    CPPUNIT_ASSERT(m_headerParser->nbFunctions() == 2 );
+    STR_MESSASSERT(m_headerParser->getFunction(0).getName(), std::string("isTrue"));
   }
   CPPUNIT_TEST_SUITE(TruckBorisCppTests);
   CPPUNIT_TEST(headerParser_testInitializedHeaderParser);
@@ -548,7 +540,7 @@ class TruckBorisScopeParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    CPPUNIT_ASSERT(m_headerParser->getFunctions().size() == 4 ); 
+    CPPUNIT_ASSERT(m_headerParser->nbFunctions() == 4 ); 
     CPPUNIT_ASSERT(m_headerParser->getTypedefs().size() == 8 ); 
   }
   void headerParser_testTypedefs()
@@ -572,35 +564,31 @@ class TruckBorisScopeParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse(false) == true);
-    std::vector<TruckBoris::Function> f;
-    f = m_headerParser->getFunctions();
-    STR_MESSASSERT(f[0].getName(), std::string("une_fonction"));
-    CPPUNIT_ASSERT(f[0].getParameters().size() == 2);
-    CPPUNIT_ASSERT(f[0].isMain() == false);
-    STR_MESSASSERT(f[1].getName(), std::string("pupute"));
-    CPPUNIT_ASSERT(f[1].getParameters().size() == 2);
-    CPPUNIT_ASSERT(f[1].isMain() == false);
-    STR_MESSASSERT(f[2].getName(), std::string("tato"));
-    CPPUNIT_ASSERT(f[2].getParameters().size() == 0);
-    CPPUNIT_ASSERT(f[2].isMain() == false);
-    STR_MESSASSERT(f[3].getName(), std::string("main"));
-    CPPUNIT_ASSERT(f[3].getParameters().size() == 2);
-    CPPUNIT_ASSERT(f[3].isMain() == true);
+    STR_MESSASSERT(m_headerParser->getFunction(0).getName(), std::string("une_fonction"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(0).getParameters().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getFunction(0).isMain() == false);
+    STR_MESSASSERT(m_headerParser->getFunction(1).getName(), std::string("pupute"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(1).getParameters().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getFunction(1).isMain() == false);
+    STR_MESSASSERT(m_headerParser->getFunction(2).getName(), std::string("tato"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(2).getParameters().size() == 0);
+    CPPUNIT_ASSERT(m_headerParser->getFunction(2).isMain() == false);
+    STR_MESSASSERT(m_headerParser->getFunction(3).getName(), std::string("main"));
+    CPPUNIT_ASSERT(m_headerParser->getFunction(3).getParameters().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getFunction(3).isMain() == true);
   }
   void headerParser_testMainFileFunctions()
   {
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
-    std::vector<TruckBoris::Function> f;
-    f = m_headerParser->getFunctions();
-    CPPUNIT_ASSERT(m_headerParser->getFunctions().size() == 2 ); 
-    //STR_MESSASSERT(f[0].getName(), std::string("tato"));
-    //CPPUNIT_ASSERT(f[0].getParameters().size() == 0);
-    //CPPUNIT_ASSERT(f[0].isMain() == false);
-    //STR_MESSASSERT(f[1].getName(), std::string("main"));
-    //CPPUNIT_ASSERT(f[1].getParameters().size() == 2);
-    //CPPUNIT_ASSERT(f[1].isMain() == true);
+    CPPUNIT_ASSERT(m_headerParser->nbFunctions() == 2 ); 
+    //STR_MESSASSERT(m_headerParser->getFunction(0).getName(), std::string("tato"));
+    //CPPUNIT_ASSERT(m_headerParser->getFunction(0).getParameters().size() == 0);
+    //CPPUNIT_ASSERT(m_headerParser->getFunction(0).isMain() == false);
+    //STR_MESSASSERT(m_headerParser->getFunction(1).getName(), std::string("main"));
+    //CPPUNIT_ASSERT(m_headerParser->getFunction(1).getParameters().size() == 2);
+    //CPPUNIT_ASSERT(m_headerParser->getFunction(1).isMain() == true);
   }
   void headerParser_testMainFileTypedefs()
   {

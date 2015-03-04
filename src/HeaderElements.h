@@ -23,7 +23,6 @@ namespace TruckBoris {
       virtual void HandleTagDeclDefinition( clang::TagDecl * d);
       int nbFunctions() const;
       Function getFunction(int) const;
-      std::vector<Function> getFunctions() const;
       int nbTypedefs() const;
       Typedef getTypedef(int) const;
       std::vector<Typedef> getTypedefs() const;
