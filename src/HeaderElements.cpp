@@ -94,11 +94,6 @@ namespace TruckBoris {
   {
     return m_structures[i];
   }
-  std::vector<Structure>
-  HeaderElements::getStructures() const
-  {
-    return m_structures;
-  }
   int
   HeaderElements::nbUnions() const
   {

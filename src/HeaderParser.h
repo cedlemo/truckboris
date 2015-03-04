@@ -24,7 +24,6 @@ namespace TruckBoris {
       std::vector<Function> getFunctions() const;
       int nbStructures() const;
       Structure getStructure(int) const;
-      std::vector<Structure> getStructures() const;
       int nbUnions() const;
       Union getUnion(int) const;
       std::vector<Union> getUnions() const;

@@ -69,9 +69,7 @@ class TruckBorisDefaultConstructorTests: public CppUnit::TestFixture
     m_headerParser->addSourceFile(TEST_SOURCE_FILE);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Structure> structures;
-    structures = m_headerParser->getStructures();
-    CPPUNIT_ASSERT(structures.size() == 6 ); 
+    CPPUNIT_ASSERT(m_headerParser->nbStructures() == 6 ); 
   }
   CPPUNIT_TEST_SUITE(TruckBorisDefaultConstructorTests);
   CPPUNIT_TEST(headerParser_testEmptyHeaderParser);
@@ -143,9 +141,7 @@ class TruckBorisSecondConstructorTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Structure> structures;
-    structures = m_headerParser->getStructures();
-    CPPUNIT_ASSERT(structures.size() == 6 ); 
+    CPPUNIT_ASSERT(m_headerParser->nbStructures() == 6 ); 
   }
   CPPUNIT_TEST_SUITE(TruckBorisSecondConstructorTests);
   CPPUNIT_TEST(headerParser_testInitializedHeaderParser);
@@ -181,52 +177,50 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    CPPUNIT_ASSERT(m_headerParser->getStructures().size() == 6 ); 
-    CPPUNIT_ASSERT(m_headerParser->getEnums().size() == 3 ); 
-    CPPUNIT_ASSERT(m_headerParser->getFunctions().size() == 4 ); 
-    CPPUNIT_ASSERT(m_headerParser->getTypedefs().size() == 7 ); 
-    CPPUNIT_ASSERT(m_headerParser->getUnions().size() == 1);
+    CPPUNIT_ASSERT(m_headerParser->nbStructures() == 6 ); 
+    CPPUNIT_ASSERT(m_headerParser->nbEnums() == 3 ); 
+    CPPUNIT_ASSERT(m_headerParser->nbFunctions() == 4 ); 
+    CPPUNIT_ASSERT(m_headerParser->nbTypedefs() == 7 ); 
+    CPPUNIT_ASSERT(m_headerParser->nbUnions() == 1);
   }
   void headerParser_testStructures()
   {
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Structure> s;
-    s = m_headerParser->getStructures();
-    STR_MESSASSERT(s[0].getName(), std::string("ana"));
-    CPPUNIT_ASSERT(s[0].hasNameForLinkage() == true);
-    CPPUNIT_ASSERT(s[0].hasLinkage() == true);
-    STR_MESSASSERT(s[0].getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(s[0].getFields().size() == 1);
+    STR_MESSASSERT(m_headerParser->getStructure(0).getName(), std::string("ana"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(0).hasNameForLinkage() == true);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(0).hasLinkage() == true);
+    STR_MESSASSERT(m_headerParser->getStructure(0).getTypedefName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(0).getFields().size() == 1);
     //std::string raw = s[0].getRaw(m_headerParser->getSourceManager(), m_headerParser->getLangOpts());
     //std::string decl("struct ana {\n  int touf;\n} nas;");
     //CPPUNIT_ASSERT_MESSAGE(raw, raw == decl);
-    STR_MESSASSERT(s[1].getName(), std::string("_geronimo"));
-    CPPUNIT_ASSERT(s[1].hasNameForLinkage() == true);
-    CPPUNIT_ASSERT(s[1].hasLinkage() == true);
-    STR_MESSASSERT(s[1].getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(s[1].getFields().size() == 1);
-    STR_MESSASSERT(s[2].getName(), std::string(""));
-    CPPUNIT_ASSERT(s[2].hasNameForLinkage() == false);
-    CPPUNIT_ASSERT(s[2].hasLinkage() == false);
-    STR_MESSASSERT(s[2].getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(s[2].getFields().size() == 2);
-    STR_MESSASSERT(s[3].getName(), std::string(""));
-    CPPUNIT_ASSERT(s[3].hasNameForLinkage() == true);
-    CPPUNIT_ASSERT(s[3].hasLinkage() == true);
-    STR_MESSASSERT(s[3].getTypedefName(), std::string("tomate"));
-    CPPUNIT_ASSERT(s[3].getFields().size() == 1);
-    STR_MESSASSERT(s[4].getName(), std::string("_poire"));
-    CPPUNIT_ASSERT(s[4].hasNameForLinkage() == true);
-    CPPUNIT_ASSERT(s[4].hasLinkage() == true);
-    STR_MESSASSERT(s[4].getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(s[4].getFields().size() == 2);
-    STR_MESSASSERT(s[5].getName(), std::string(""));
-    CPPUNIT_ASSERT(s[5].hasNameForLinkage() == false);
-    CPPUNIT_ASSERT(s[5].hasLinkage() == false);
-    STR_MESSASSERT(s[5].getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(s[5].getFields().size() == 2);
+    STR_MESSASSERT(m_headerParser->getStructure(1).getName(), std::string("_geronimo"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(1).hasNameForLinkage() == true);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(1).hasLinkage() == true);
+    STR_MESSASSERT(m_headerParser->getStructure(1).getTypedefName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(1).getFields().size() == 1);
+    STR_MESSASSERT(m_headerParser->getStructure(2).getName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(2).hasNameForLinkage() == false);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(2).hasLinkage() == false);
+    STR_MESSASSERT(m_headerParser->getStructure(2).getTypedefName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(2).getFields().size() == 2);
+    STR_MESSASSERT(m_headerParser->getStructure(3).getName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(3).hasNameForLinkage() == true);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(3).hasLinkage() == true);
+    STR_MESSASSERT(m_headerParser->getStructure(3).getTypedefName(), std::string("tomate"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(3).getFields().size() == 1);
+    STR_MESSASSERT(m_headerParser->getStructure(4).getName(), std::string("_poire"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(4).hasNameForLinkage() == true);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(4).hasLinkage() == true);
+    STR_MESSASSERT(m_headerParser->getStructure(4).getTypedefName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(4).getFields().size() == 2);
+    STR_MESSASSERT(m_headerParser->getStructure(5).getName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(5).hasNameForLinkage() == false);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(5).hasLinkage() == false);
+    STR_MESSASSERT(m_headerParser->getStructure(5).getTypedefName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(5).getFields().size() == 2);
   }
   void headerParser_testUnions()
   {
@@ -329,17 +323,15 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Structure> s;
     std::vector<TruckBoris::Union> u;
-    s = m_headerParser->getStructures();
     u = m_headerParser->getUnions();
     std::vector<TruckBoris::Field> f;
-    f = s[0].getFields();
+    f = m_headerParser->getStructure(0).getFields();
     STR_MESSASSERT(f[0].getName(), std::string("touf"));
-    f = s[2].getFields();
+    f = m_headerParser->getStructure(2).getFields();
     STR_MESSASSERT(f[0].getName(), std::string("titi"));
     STR_MESSASSERT(f[1].getName(), std::string("y"));
-    f = s[3].getFields();
+    f = m_headerParser->getStructure(3).getFields();
     STR_MESSASSERT(f[0].getName(), std::string("z"));
     f = u[0].getFields();
     STR_MESSASSERT(f[0].getName(), std::string("i"));
@@ -397,14 +389,14 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     STR_MESSASSERT(t[6].getType().getClangTypeClassName(), std::string("Typedef"));
     STR_MESSASSERT(t[6].getType().getCanonicalType().getName(), std::string("struct _poire"));
     STR_MESSASSERT(t[6].getType().getCanonicalType().getClangTypeClassName(), std::string("Record"));
-    std::vector<TruckBoris::Structure> s;
-    s = m_headerParser->getStructures();
+    //std::vector<TruckBoris::Structure> s;
+    //s = m_headerParser->getStructures();
     std::vector<TruckBoris::Field> f;
     //struct _poire {
     //  int g;
     //  tomate rouge;
     //};
-    f = s[4].getFields();
+    f = m_headerParser->getStructure(4).getFields();
     STR_MESSASSERT(f[0].getType().getName(), std::string("int"));
     CPPUNIT_ASSERT(f[0].getType().isCanonical() == true);
     STR_MESSASSERT(f[1].getType().getName(), std::string("tomate"));
@@ -415,7 +407,7 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     //  int zozo;
     //  kudamono fruit;
     //} poney;
-    f = s[5].getFields();
+    f = m_headerParser->getStructure(5).getFields();
     STR_MESSASSERT(f[0].getType().getName(), std::string("int"));
     CPPUNIT_ASSERT(f[0].getType().isCanonical() == true);
     STR_MESSASSERT(f[1].getType().getName(), std::string("kudamono"));
@@ -624,9 +616,7 @@ class TruckBorisScopeParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
-    std::vector<TruckBoris::Structure> s;
-    s = m_headerParser->getStructures();
-    CPPUNIT_ASSERT(s.size() == 0);
+    CPPUNIT_ASSERT(m_headerParser->nbStructures() == 0);
   }
   void headerParser_testMainFileUnions()
   {

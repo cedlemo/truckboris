@@ -209,14 +209,6 @@ namespace TruckBoris {
       j = max;
     return m_headerElements->getStructure(j);
   }
-  std::vector<Structure>
-  HeaderParser::getStructures() const
-  {
-    if (m_source == std::string())
-      return std::vector<Structure>();
-
-    return m_headerElements->getStructures();
-  }
   int 
   HeaderParser::nbEnums() const
   {
