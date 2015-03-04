@@ -1,5 +1,5 @@
 AC_PREREQ(2.69)
-AC_INIT(truckBoris, 1.0.1, cedlemo@gmx.fr)
+AC_INIT(truckBoris, 1.0.2, cedlemo@gmx.fr)
 AC_CONFIG_SRCDIR(configure.ac)
 AM_CONFIG_HEADER(config.h)
 AC_SUBST([LLVMCONFIG],[$(which llvm-config)])

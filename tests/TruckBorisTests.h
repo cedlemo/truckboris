@@ -242,17 +242,17 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->getEnum(0).hasNameForLinkage() == true);
     CPPUNIT_ASSERT(m_headerParser->getEnum(0).hasLinkage() == true);
     STR_MESSASSERT(m_headerParser->getEnum(0).getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(m_headerParser->getEnum(0).getConstants().size() == 3);
+    CPPUNIT_ASSERT(m_headerParser->getEnum(0).nbConstants() == 3);
     STR_MESSASSERT(m_headerParser->getEnum(1).getName(), std::string("pipete"));
     CPPUNIT_ASSERT(m_headerParser->getEnum(1).hasNameForLinkage() == true);
     CPPUNIT_ASSERT(m_headerParser->getEnum(1).hasLinkage() == true);
     STR_MESSASSERT(m_headerParser->getEnum(1).getTypedefName(), std::string("")); //aplume
-    CPPUNIT_ASSERT(m_headerParser->getEnum(1).getConstants().size() == 4);
+    CPPUNIT_ASSERT(m_headerParser->getEnum(1).nbConstants() == 4);
     STR_MESSASSERT(m_headerParser->getEnum(2).getName(), std::string(""));
     CPPUNIT_ASSERT(m_headerParser->getEnum(2).hasNameForLinkage() == true);
     CPPUNIT_ASSERT(m_headerParser->getEnum(2).hasLinkage() == true);
     STR_MESSASSERT(m_headerParser->getEnum(2).getTypedefName(), std::string("baka"));
-    CPPUNIT_ASSERT(m_headerParser->getEnum(2).getConstants().size() == 3);
+    CPPUNIT_ASSERT(m_headerParser->getEnum(2).nbConstants() == 3);
   }
   void headerParser_testTypedefs()
   {
@@ -322,23 +322,21 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::EnumConstant> c;
-    c = m_headerParser->getEnum(1).getConstants();
-    STR_MESSASSERT(c[0].getName(), std::string("CANON"));
-    CPPUNIT_ASSERT(c[0].getValue() == 0); 
-    STR_MESSASSERT(c[1].getName(), std::string("FUSIL"));
-    CPPUNIT_ASSERT(c[1].getValue() == 3); 
-    STR_MESSASSERT(c[2].getName(), std::string("ARC"));
-    CPPUNIT_ASSERT(c[2].getValue() == 4); 
-    STR_MESSASSERT(c[3].getName(), std::string("CANNEAPECHE"));
-    CPPUNIT_ASSERT(c[3].getValue() == 5); 
-    c = m_headerParser->getEnum(2).getConstants();
-    STR_MESSASSERT(c[0].getName(), std::string("POLO"));
-    CPPUNIT_ASSERT(c[0].getValue() == 0); 
-    STR_MESSASSERT(c[1].getName(), std::string("MARCO"));
-    CPPUNIT_ASSERT(c[1].getValue() == 1); 
-    STR_MESSASSERT(c[2].getName(), std::string("NADINE"));
-    CPPUNIT_ASSERT(c[2].getValue() == 2); 
+    CPPUNIT_ASSERT(m_headerParser->getEnum(1).nbConstants() == 4);
+    STR_MESSASSERT(m_headerParser->getEnum(1).getConstant(0).getName(), std::string("CANON"));
+    CPPUNIT_ASSERT(m_headerParser->getEnum(1).getConstant(0).getValue() == 0); 
+    STR_MESSASSERT(m_headerParser->getEnum(1).getConstant(1).getName(), std::string("FUSIL"));
+    CPPUNIT_ASSERT(m_headerParser->getEnum(1).getConstant(1).getValue() == 3); 
+    STR_MESSASSERT(m_headerParser->getEnum(1).getConstant(2).getName(), std::string("ARC"));
+    CPPUNIT_ASSERT(m_headerParser->getEnum(1).getConstant(2).getValue() == 4); 
+    STR_MESSASSERT(m_headerParser->getEnum(1).getConstant(3).getName(), std::string("CANNEAPECHE"));
+    CPPUNIT_ASSERT(m_headerParser->getEnum(1).getConstant(3).getValue() == 5); 
+    STR_MESSASSERT(m_headerParser->getEnum(2).getConstant(0).getName(), std::string("POLO"));
+    CPPUNIT_ASSERT(m_headerParser->getEnum(2).getConstant(0).getValue() == 0); 
+    STR_MESSASSERT(m_headerParser->getEnum(2).getConstant(1).getName(), std::string("MARCO"));
+    CPPUNIT_ASSERT(m_headerParser->getEnum(2).getConstant(1).getValue() == 1); 
+    STR_MESSASSERT(m_headerParser->getEnum(2).getConstant(2).getName(), std::string("NADINE"));
+    CPPUNIT_ASSERT(m_headerParser->getEnum(2).getConstant(2).getValue() == 2); 
    
   }
   void headerParser_testType()

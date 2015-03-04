@@ -271,7 +271,7 @@ namespace TruckBoris {
   {
     return m_tagType;
   }
-  int Enum::getConstantsNumber() const
+  int Enum::nbConstants() const
   {
     int i = 0;
     clang::EnumDecl *e;
@@ -283,20 +283,7 @@ namespace TruckBoris {
     } 
     return i;
   }
-  std::vector<EnumConstant> Enum::getConstants() const
-  {
-    std::vector<EnumConstant> constants;
-    clang::EnumDecl *e;
-    e = llvm::cast<clang::EnumDecl>(m_var);
-    clang::EnumDecl::enumerator_iterator it;
-    for(it=e->enumerator_begin(); it !=e->enumerator_end(); ++it)
-    {
-      EnumConstant c(*it);
-      constants.push_back(c);
-    } 
-    return constants;
-  }
-  clang::EnumConstantDecl * Enum::getConstant(int i) const
+  EnumConstant Enum::getConstant(int i) const
   {
     clang::EnumDecl *e;
     std::vector<clang::EnumConstantDecl *> constants;
@@ -308,22 +295,11 @@ namespace TruckBoris {
       j++;
       constants.push_back(*it);
     }
-    if(i>0 && i <j)
-      return constants[i];
+    if(i>=0 && i <j)
+      return EnumConstant(constants[i]);
     else
-      return NULL;
+      return EnumConstant(NULL);
   }
-  /*void Enum::printEnumsConstant() const
-  {
-    clang::EnumDecl *e;
-    e = llvm::cast<clang::EnumDecl>(m_var);
-    clang::EnumDecl::enumerator_iterator it;
-    for(it=e->enumerator_begin(); it !=e->enumerator_end(); ++it)
-    {
-      clang::EnumConstantDecl * enumerator= (*it);
-      std::cout << enumerator->getNameAsString() << "  " << enumerator->getInitVal().getSExtValue() << std::endl;
-    }
-  }*/
   EnumConstant::EnumConstant(): m_constant(NULL)
   {
   }
@@ -345,10 +321,14 @@ namespace TruckBoris {
   }*/
   std::string EnumConstant::getName() const
   {
-    return m_constant->getNameAsString();
+    if(m_constant) 
+      return m_constant->getNameAsString();
+    else
+      return std::string();
   }
   int EnumConstant::getValue() const
   {
+    //TODO protect this
     return m_constant->getInitVal().getSExtValue();
   }
 }
