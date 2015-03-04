@@ -251,14 +251,6 @@ namespace TruckBoris {
       j = max;
     return m_headerElements->getUnion(j);
   }
-  std::vector<Union>
-  HeaderParser::getUnions() const
-  {
-    if (m_source == std::string())
-      return std::vector<Union>();
-
-    return m_headerElements->getUnions();
-  }
   int 
   HeaderParser::nbTypedefs() const
   {

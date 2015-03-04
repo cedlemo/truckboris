@@ -99,11 +99,6 @@ namespace TruckBoris {
   {
     return m_unions[i];
   }
-  std::vector<Union>
-  HeaderElements::getUnions() const
-  {
-    return m_unions;
-  }
   int
   HeaderElements::nbEnums() const
   {

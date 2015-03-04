@@ -25,7 +25,6 @@ namespace TruckBoris {
       Structure getStructure(int) const;
       int nbUnions() const;
       Union getUnion(int) const;
-      std::vector<Union> getUnions() const;
       int nbEnums() const;
       Enum getEnum(int) const;
       std::vector<Enum> getEnums() const;

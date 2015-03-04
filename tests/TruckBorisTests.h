@@ -227,13 +227,11 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Union> u;
-    u = m_headerParser->getUnions();
-    STR_MESSASSERT(u[0].getName(), std::string("Data"));
-    CPPUNIT_ASSERT(u[0].hasNameForLinkage() == true);
-    CPPUNIT_ASSERT(u[0].hasLinkage() == true);
-    STR_MESSASSERT(u[0].getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(u[0].getFields().size() == 3);
+    STR_MESSASSERT(m_headerParser->getUnion(0).getName(), std::string("Data"));
+    CPPUNIT_ASSERT(m_headerParser->getUnion(0).hasNameForLinkage() == true);
+    CPPUNIT_ASSERT(m_headerParser->getUnion(0).hasLinkage() == true);
+    STR_MESSASSERT(m_headerParser->getUnion(0).getTypedefName(), std::string(""));
+    CPPUNIT_ASSERT(m_headerParser->getUnion(0).getFields().size() == 3);
   }
   void headerParser_testEnums()
   {
@@ -319,8 +317,6 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Union> u;
-    u = m_headerParser->getUnions();
     std::vector<TruckBoris::Field> f;
     f = m_headerParser->getStructure(0).getFields();
     STR_MESSASSERT(f[0].getName(), std::string("touf"));
@@ -329,7 +325,7 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     STR_MESSASSERT(f[1].getName(), std::string("y"));
     f = m_headerParser->getStructure(3).getFields();
     STR_MESSASSERT(f[0].getName(), std::string("z"));
-    f = u[0].getFields();
+    f = m_headerParser->getUnion(0).getFields();
     STR_MESSASSERT(f[0].getName(), std::string("i"));
     STR_MESSASSERT(f[1].getName(), std::string("f"));
     STR_MESSASSERT(f[2].getName(), std::string("str"));
@@ -611,9 +607,7 @@ class TruckBorisScopeParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_LIMIT_PARSING_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse(true) == true);
-    std::vector<TruckBoris::Union> u;
-    u = m_headerParser->getUnions();
-    CPPUNIT_ASSERT(u.size() == 0);
+    CPPUNIT_ASSERT(m_headerParser->nbUnions() == 0);
   }
   void headerParser_testMainFileEnums()
   {
