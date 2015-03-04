@@ -222,14 +222,6 @@ namespace TruckBoris {
       j = max;
     return m_headerElements->getEnum(j);
   }
-  std::vector<Enum>
-  HeaderParser::getEnums() const
-  {
-    if (m_source == std::string())
-      return std::vector<Enum>();
-
-    return m_headerElements->getEnums();
-  }
   int 
   HeaderParser::nbUnions() const
   {

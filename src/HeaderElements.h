@@ -32,7 +32,6 @@ namespace TruckBoris {
       Union getUnion(int) const;
       int nbEnums() const;
       Enum getEnum(int) const;
-      std::vector<Enum> getEnums() const;
       std::vector<TagDeclaration> getClasses() const;
     private:
       std::vector<Function> m_functions;

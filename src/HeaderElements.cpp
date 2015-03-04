@@ -109,11 +109,6 @@ namespace TruckBoris {
   {
     return m_enums[i];
   }
-  std::vector<Enum>
-  HeaderElements::getEnums() const
-  {
-    return m_enums;
-  }
   std::vector<TagDeclaration> HeaderElements::getClasses() const
   {
     return m_classes;

@@ -27,7 +27,6 @@ namespace TruckBoris {
       Union getUnion(int) const;
       int nbEnums() const;
       Enum getEnum(int) const;
-      std::vector<Enum> getEnums() const;
       int nbTypedefs() const;
       Typedef getTypedef(int) const;
       std::vector<Typedef> getTypedefs() const;
