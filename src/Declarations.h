@@ -80,9 +80,8 @@ namespace TruckBoris {
       /*virtual*/ Structure& Equals(const Structure& tag);
 //#pragma clang diagnostic pop
       std::string getTagType() const;
-      int getFieldsNumber() const;
-      std::vector<Field> getFields() const;
-      clang::FieldDecl * getField(int i) const;
+      int nbFields() const;
+      Field getField(int i) const;
     private:
       std::string m_tagType;
   };
@@ -97,9 +96,8 @@ namespace TruckBoris {
       /*virtual*/ Union& Equals(const Union& tag);
 //#pragma clang diagnostic pop
       std::string getTagType() const;
-      int getFieldsNumber() const;
-      std::vector<Field> getFields() const;
-      clang::FieldDecl * getField(int i) const;
+      int nbFields() const;
+      Field getField(int i) const;
     private:
       std::string m_tagType;
   };

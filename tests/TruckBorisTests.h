@@ -192,7 +192,7 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->getStructure(0).hasNameForLinkage() == true);
     CPPUNIT_ASSERT(m_headerParser->getStructure(0).hasLinkage() == true);
     STR_MESSASSERT(m_headerParser->getStructure(0).getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(m_headerParser->getStructure(0).getFields().size() == 1);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(0).nbFields() == 1);
     //std::string raw = s[0].getRaw(m_headerParser->getSourceManager(), m_headerParser->getLangOpts());
     //std::string decl("struct ana {\n  int touf;\n} nas;");
     //CPPUNIT_ASSERT_MESSAGE(raw, raw == decl);
@@ -200,27 +200,27 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->getStructure(1).hasNameForLinkage() == true);
     CPPUNIT_ASSERT(m_headerParser->getStructure(1).hasLinkage() == true);
     STR_MESSASSERT(m_headerParser->getStructure(1).getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(m_headerParser->getStructure(1).getFields().size() == 1);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(1).nbFields() == 1);
     STR_MESSASSERT(m_headerParser->getStructure(2).getName(), std::string(""));
     CPPUNIT_ASSERT(m_headerParser->getStructure(2).hasNameForLinkage() == false);
     CPPUNIT_ASSERT(m_headerParser->getStructure(2).hasLinkage() == false);
     STR_MESSASSERT(m_headerParser->getStructure(2).getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(m_headerParser->getStructure(2).getFields().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(2).nbFields() == 2);
     STR_MESSASSERT(m_headerParser->getStructure(3).getName(), std::string(""));
     CPPUNIT_ASSERT(m_headerParser->getStructure(3).hasNameForLinkage() == true);
     CPPUNIT_ASSERT(m_headerParser->getStructure(3).hasLinkage() == true);
     STR_MESSASSERT(m_headerParser->getStructure(3).getTypedefName(), std::string("tomate"));
-    CPPUNIT_ASSERT(m_headerParser->getStructure(3).getFields().size() == 1);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(3).nbFields() == 1);
     STR_MESSASSERT(m_headerParser->getStructure(4).getName(), std::string("_poire"));
     CPPUNIT_ASSERT(m_headerParser->getStructure(4).hasNameForLinkage() == true);
     CPPUNIT_ASSERT(m_headerParser->getStructure(4).hasLinkage() == true);
     STR_MESSASSERT(m_headerParser->getStructure(4).getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(m_headerParser->getStructure(4).getFields().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(4).nbFields() == 2);
     STR_MESSASSERT(m_headerParser->getStructure(5).getName(), std::string(""));
     CPPUNIT_ASSERT(m_headerParser->getStructure(5).hasNameForLinkage() == false);
     CPPUNIT_ASSERT(m_headerParser->getStructure(5).hasLinkage() == false);
     STR_MESSASSERT(m_headerParser->getStructure(5).getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(m_headerParser->getStructure(5).getFields().size() == 2);
+    CPPUNIT_ASSERT(m_headerParser->getStructure(5).nbFields() == 2);
   }
   void headerParser_testUnions()
   {
@@ -231,7 +231,7 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->getUnion(0).hasNameForLinkage() == true);
     CPPUNIT_ASSERT(m_headerParser->getUnion(0).hasLinkage() == true);
     STR_MESSASSERT(m_headerParser->getUnion(0).getTypedefName(), std::string(""));
-    CPPUNIT_ASSERT(m_headerParser->getUnion(0).getFields().size() == 3);
+    CPPUNIT_ASSERT(m_headerParser->getUnion(0).nbFields() == 3);
   }
   void headerParser_testEnums()
   {
@@ -309,18 +309,13 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     CPPUNIT_ASSERT(m_headerParser->isInitialized() == true);
     STR_MESSASSERT(m_headerParser->getSourceFile(), std::string(TEST_SOURCE_FILE) );
     CPPUNIT_ASSERT(m_headerParser->parse() == true);
-    std::vector<TruckBoris::Field> f;
-    f = m_headerParser->getStructure(0).getFields();
-    STR_MESSASSERT(f[0].getName(), std::string("touf"));
-    f = m_headerParser->getStructure(2).getFields();
-    STR_MESSASSERT(f[0].getName(), std::string("titi"));
-    STR_MESSASSERT(f[1].getName(), std::string("y"));
-    f = m_headerParser->getStructure(3).getFields();
-    STR_MESSASSERT(f[0].getName(), std::string("z"));
-    f = m_headerParser->getUnion(0).getFields();
-    STR_MESSASSERT(f[0].getName(), std::string("i"));
-    STR_MESSASSERT(f[1].getName(), std::string("f"));
-    STR_MESSASSERT(f[2].getName(), std::string("str"));
+    STR_MESSASSERT(m_headerParser->getStructure(0).getField(0).getName(), std::string("touf"));
+    STR_MESSASSERT(m_headerParser->getStructure(2).getField(0).getName(), std::string("titi"));
+    STR_MESSASSERT(m_headerParser->getStructure(2).getField(1).getName(), std::string("y"));
+    STR_MESSASSERT(m_headerParser->getStructure(3).getField(0).getName(), std::string("z"));
+    STR_MESSASSERT(m_headerParser->getUnion(0).getField(0).getName(), std::string("i"));
+    STR_MESSASSERT(m_headerParser->getUnion(0).getField(1).getName(), std::string("f"));
+    STR_MESSASSERT(m_headerParser->getUnion(0).getField(2).getName(), std::string("str"));
   }
   void headerParser_testEnumConstants()
   {
@@ -376,23 +371,21 @@ class TruckBorisParsingTests: public CppUnit::TestFixture
     //  int g;
     //  tomate rouge;
     //};
-    f = m_headerParser->getStructure(4).getFields();
-    STR_MESSASSERT(f[0].getType().getName(), std::string("int"));
-    CPPUNIT_ASSERT(f[0].getType().isCanonical() == true);
-    STR_MESSASSERT(f[1].getType().getName(), std::string("tomate"));
-    CPPUNIT_ASSERT(f[1].getType().isCanonical() == false); //ok it is not a canonical QualType
-    STR_MESSASSERT(f[1].getType().getCanonicalType().getName(), std::string("tomate"));
-    CPPUNIT_ASSERT(f[1].getType().getCanonicalType().isCanonical() == true);
+    STR_MESSASSERT(m_headerParser->getStructure(4).getField(0).getType().getName(), std::string("int"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(4).getField(0).getType().isCanonical() == true);
+    STR_MESSASSERT(m_headerParser->getStructure(4).getField(1).getType().getName(), std::string("tomate"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(4).getField(1).getType().isCanonical() == false); //ok it is not a canonical QualType
+    STR_MESSASSERT(m_headerParser->getStructure(4).getField(1).getType().getCanonicalType().getName(), std::string("tomate"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(4).getField(1).getType().getCanonicalType().isCanonical() == true);
     //struct {
     //  int zozo;
     //  kudamono fruit;
     //} poney;
-    f = m_headerParser->getStructure(5).getFields();
-    STR_MESSASSERT(f[0].getType().getName(), std::string("int"));
-    CPPUNIT_ASSERT(f[0].getType().isCanonical() == true);
-    STR_MESSASSERT(f[1].getType().getName(), std::string("kudamono"));
-    CPPUNIT_ASSERT(f[1].getType().isCanonical() == false);
-    STR_MESSASSERT(f[1].getType().getCanonicalType().getName(), std::string("struct _poire"));
+    STR_MESSASSERT(m_headerParser->getStructure(5).getField(0).getType().getName(), std::string("int"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(5).getField(0).getType().isCanonical() == true);
+    STR_MESSASSERT(m_headerParser->getStructure(5).getField(1).getType().getName(), std::string("kudamono"));
+    CPPUNIT_ASSERT(m_headerParser->getStructure(5).getField(1).getType().isCanonical() == false);
+    STR_MESSASSERT(m_headerParser->getStructure(5).getField(1).getType().getCanonicalType().getName(), std::string("struct _poire"));
     STR_MESSASSERT(m_headerParser->getFunction(0).getParameter(0).getType().getName(), std::string("int"));
     CPPUNIT_ASSERT(m_headerParser->getFunction(0).getParameter(0).getType().isCanonical() == true);
     STR_MESSASSERT(m_headerParser->getFunction(1).getParameter(0).getType().getName(), std::string("tomate *"));

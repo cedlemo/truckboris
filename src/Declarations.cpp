@@ -181,20 +181,7 @@ namespace TruckBoris {
     m_var = tag.m_var;
     return *this;
   }
-  std::vector<Field> Structure::getFields() const
-  {
-    std::vector<Field> fields;
-    
-    clang::RecordDecl *r;
-    r = llvm::cast<clang::RecordDecl>(m_var);
-    clang::RecordDecl::field_iterator jt;
-    for(jt = r->field_begin(); jt != r->field_end(); ++jt)
-    {
-      fields.push_back(Field(*jt));
-    }
-    return fields;
-  }
-  clang::FieldDecl* Structure::getField(int i) const
+  Field Structure::getField(int i) const
   {
     std::vector<clang::FieldDecl *> fields;
     
@@ -206,11 +193,11 @@ namespace TruckBoris {
       fields.push_back((*jt));
     }
     if(i>= 0 && i < fields.size() )
-      return fields[i];
+      return Field(fields[i]);
     else
-      return NULL;
+      return Field(NULL);
   }
-  int Structure::getFieldsNumber() const
+  int Structure::nbFields() const
   {
     clang::RecordDecl *r;
     r = llvm::cast<clang::RecordDecl>(m_var);
@@ -239,20 +226,7 @@ namespace TruckBoris {
     m_var = tag.m_var;
     return *this;
   }
-  std::vector<Field> Union::getFields() const
-  {
-    std::vector<Field> fields;
-    
-    clang::RecordDecl *r;
-    r = llvm::cast<clang::RecordDecl>(m_var);
-    clang::RecordDecl::field_iterator jt;
-    for(jt = r->field_begin(); jt != r->field_end(); ++jt)
-    {
-      fields.push_back(Field(*jt));
-    }
-    return fields;
-  }
-  clang::FieldDecl* Union::getField(int i) const
+  Field Union::getField(int i) const
   {
     std::vector<clang::FieldDecl *> fields;
     
@@ -264,11 +238,11 @@ namespace TruckBoris {
       fields.push_back((*jt));
     }
     if(i>= 0 && i < fields.size() )
-      return fields[i];
+      return Field(fields[i]);
     else
-      return NULL;
+      return Field(NULL);
   }
-  int Union::getFieldsNumber() const
+  int Union::nbFields() const
   {
     clang::RecordDecl *r;
     r = llvm::cast<clang::RecordDecl>(m_var);
