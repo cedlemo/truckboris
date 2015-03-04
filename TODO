@@ -14,17 +14,21 @@ done see for pb isCanonical see mail and const RecordType * getAsStructureType()
 done create a method in order to get the represented clang class (getInternalClangTypeClassName() )
 done find all the QualType methods that returns another QualType
 done add isMain() method to Function class
-TODO do stack allocation with CompilerInstance and HeaderElements
+done update swig lib
+done add option to force parsing on only main file:
+TODO update interface for Parameter and Field
+  *    remove getParameters
+  *    remove getFields
+TODO try to get global variables
+TODO find a way in order to get Decl from typedef -> Type
+
+###########C++ sources parsing
+TODO handle class and methods 
 TODO add c++ ability with :CompilerInvocation::setLangDefaults(languageOptions, IK_CXX); setLangDefaults + InputKind 
 and http://www.ibm.com/developerworks/linux/library/os-createcompilerllvm2/index.html?ca=drs-#list15
-  where to do spécify it ?
+  where to do specify it ?
     HeaderParser constructor with default langage C
     HeaderParser::parse(std::string langage)
 !!!!http://stackoverflow.com/questions/23327997/failing-to-parse-c-using-llvm-and-clang
 done create tests for those methods
-done update swig lib
-done add option to force parsing on only main file:
-TODO don't make the classes rely on the HeaderParser class, fill all the other classes with strings at the parsing
-TODO remove the set_ptr get_ptr methods
-TODO find a way in order to get Decl from typedef -> Type
-TODO handle class and methods 
+
