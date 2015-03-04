@@ -19,6 +19,7 @@ done add option to force parsing on only main file:
 TODO update interface for Parameter and Field
   *    remove getParameters
   *    remove getFields
+  *    remove getConstants
 TODO try to get global variables
 TODO find a way in order to get Decl from typedef -> Type
 
