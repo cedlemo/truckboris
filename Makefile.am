@@ -6,7 +6,7 @@ config.guess ltmain.sh
 
 CLANGCXXFLAGS := -I$(shell @LLVMCONFIG@ --src-root)/tools/clang/include \
                 -I$(shell @LLVMCONFIG@ --obj-root)/tools/clang/include \
-                $(shell @LLVMCONFIG@ --cxxflags) -fcxx-exceptions
+                @LLVMCXXFLAGS@ -fcxx-exceptions
 CLANGLIBS = -lclangTooling\
         -lclangFrontendTool\
         -lclangFrontend\

@@ -8,6 +8,7 @@
 #include "clang/Lex/HeaderSearch.h" //HeaderSearch HeaderSearchOptions
 #include <algorithm>
 #include <iostream>
+
 namespace TruckBoris {
   HeaderParser::HeaderParser()
   {
@@ -17,11 +18,20 @@ namespace TruckBoris {
     m_ci.createDiagnostics();
     m_ci.createFileManager();
     m_ci.createSourceManager(m_ci.getFileManager());
-    std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
-    pto->Triple = llvm::sys::getDefaultTargetTriple();
-    clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
-    m_ci.setTarget(pti);
-    m_ci.createPreprocessor(clang::TU_Complete);
+    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
+      std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
+      pto->Triple = llvm::sys::getDefaultTargetTriple();
+      clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
+      m_ci.setTarget(pti);
+      m_ci.createPreprocessor(clang::TU_Complete);		
+    #else		
+      m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
+      llvm::IntrusiveRefCntPtr<clang::TargetOptions> pto( new clang::TargetOptions());
+      pto->Triple = llvm::sys::getDefaultTargetTriple();
+      clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto.getPtr());
+      m_ci.setTarget(pti);
+      m_ci.createPreprocessor(); 		
+    #endif     
     m_ciInitialized = true;
     m_headerElements = NULL;
   }
@@ -33,11 +43,20 @@ namespace TruckBoris {
     m_ci.createDiagnostics();
     m_ci.createFileManager();
     m_ci.createSourceManager(m_ci.getFileManager());
-    std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
-    pto->Triple = llvm::sys::getDefaultTargetTriple();
-    clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
-    m_ci.setTarget(pti);
-    m_ci.createPreprocessor(clang::TU_Complete);
+    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
+      std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
+      pto->Triple = llvm::sys::getDefaultTargetTriple();
+      clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
+      m_ci.setTarget(pti);
+      m_ci.createPreprocessor(clang::TU_Complete);		
+    #else		
+      m_hso = llvm::IntrusiveRefCntPtr<clang::HeaderSearchOptions>(new clang::HeaderSearchOptions());
+      llvm::IntrusiveRefCntPtr<clang::TargetOptions> pto( new clang::TargetOptions());
+      pto->Triple = llvm::sys::getDefaultTargetTriple();
+      clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto.getPtr());
+      m_ci.setTarget(pti);
+      m_ci.createPreprocessor(); 		
+    #endif
     m_ciInitialized = true;
     addSourceFile(sourceFile);
     addSearchPaths(headersPaths);
@@ -99,16 +118,24 @@ namespace TruckBoris {
       // FIXME
       //delete m_headersElements;
     //}
-#ifdef CLANG_3_5
+    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
    //get gcc header with helpers 
-    GenericGcc::GCCInstallationDetector gcc();
-    if(gcc.isValid())
-      gcc.print(llvm::outs); 
-#endif
+//    GenericGcc::GCCInstallationDetector gcc();
+//    if(gcc.isValid())
+//      gcc.print(llvm::outs); 
     m_ci.createPreprocessor(clang::TU_Complete);
     clang::InitializePreprocessor(m_ci.getPreprocessor(),
                                 m_ci.getPreprocessorOpts(),
-                                m_ci.getFrontendOpts()); 
+                                m_ci.getHeaderSearchOpts(),
+				m_ci.getFrontendOpts()); 
+#else
+   m_ci.createPreprocessor();	
+   clang::InitializePreprocessor(m_ci.getPreprocessor(),
+                                m_ci.getPreprocessorOpts(),
+                                m_ci.getHeaderSearchOpts(),
+				m_ci.getFrontendOpts());
+#endif
+
     m_headerElements = new HeaderElements(&(getSourceManager()), mainFile);
     m_ci.setASTConsumer(m_headerElements);
     m_ci.createASTContext();
