@@ -1,6 +1,6 @@
 # Truckboris
 
-Truckboris is a little library based on Clang 3.5. Truckboris allow you to 
+Truckboris is a little library based on Clang 3.5. Truckboris allows you to 
 create a simple C source file parser easily. 
 
 ```C++
@@ -79,9 +79,13 @@ void headerParser_testFunctions()
 
 ## Dependencies
 
-TruckBoris depends on LLVM and Clang 3.5. You need CPPUNIT for the tests.
+TruckBoris depends on LLVM and Clang 3.5. You need CPPUNIT (>= 1.12) for the tests.
 
 ## Installation
+
+### Systems tested : 
+*    Archlinux (clang 3.5, CppUnit 1.13)
+*    Fedora    (clang 3.5, CppUnit 1.12)
 
 ### Get the repository:
 <code>git clone https://github.com/cedlemo/truckboris</code>
