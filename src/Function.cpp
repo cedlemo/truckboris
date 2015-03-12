@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Declarations.h"
+#include "clang/Basic/Version.h"
 namespace TruckBoris {
   Function::Function() : m_function(NULL)
   {}
@@ -39,9 +40,9 @@ namespace TruckBoris {
     if(m_function)
     #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
       return Type(m_function->getReturnType() );
-#else
+    #else
       return Type(m_function->getResultType() );
-#endif	
+    #endif	
     else
       return Type();
   }

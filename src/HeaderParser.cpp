@@ -6,6 +6,7 @@
 #include "llvm/Support/Host.h" //llvm::sys::getDefaultTargetTriple
 #include "clang/Lex/Preprocessor.h" 
 #include "clang/Lex/HeaderSearch.h" //HeaderSearch HeaderSearchOptions
+#include "clang/Basic/Version.h"
 #include <algorithm>
 #include <iostream>
 
@@ -118,22 +119,21 @@ namespace TruckBoris {
       // FIXME
       //delete m_headersElements;
     //}
-    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
+#if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
    //get gcc header with helpers 
 //    GenericGcc::GCCInstallationDetector gcc();
 //    if(gcc.isValid())
 //      gcc.print(llvm::outs); 
-    m_ci.createPreprocessor(clang::TU_Complete);
-    clang::InitializePreprocessor(m_ci.getPreprocessor(),
+   m_ci.createPreprocessor(clang::TU_Complete);
+   clang::InitializePreprocessor(m_ci.getPreprocessor(),
                                 m_ci.getPreprocessorOpts(),
-                                m_ci.getHeaderSearchOpts(),
-				m_ci.getFrontendOpts()); 
+                        				m_ci.getFrontendOpts());
 #else
    m_ci.createPreprocessor();	
    clang::InitializePreprocessor(m_ci.getPreprocessor(),
                                 m_ci.getPreprocessorOpts(),
                                 m_ci.getHeaderSearchOpts(),
-				m_ci.getFrontendOpts());
+		                          	m_ci.getFrontendOpts()); 
 #endif
 
     m_headerElements = new HeaderElements(&(getSourceManager()), mainFile);
