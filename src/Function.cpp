@@ -38,7 +38,7 @@ namespace TruckBoris {
   Type Function::getReturn() const
   {
     if(m_function)
-    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
+    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR >= 5)		
       return Type(m_function->getReturnType() );
     #else
       return Type(m_function->getResultType() );

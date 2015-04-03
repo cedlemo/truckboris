@@ -19,7 +19,7 @@ namespace TruckBoris {
     m_ci.createDiagnostics();
     m_ci.createFileManager();
     m_ci.createSourceManager(m_ci.getFileManager());
-    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
+    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR >= 5)		
       std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
       pto->Triple = llvm::sys::getDefaultTargetTriple();
       clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
@@ -44,7 +44,7 @@ namespace TruckBoris {
     m_ci.createDiagnostics();
     m_ci.createFileManager();
     m_ci.createSourceManager(m_ci.getFileManager());
-    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
+    #if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR >= 5)		
       std::shared_ptr<clang::TargetOptions> pto = std::make_shared<clang::TargetOptions>();
       pto->Triple = llvm::sys::getDefaultTargetTriple();
       clang::TargetInfo *pti = clang::TargetInfo::CreateTargetInfo(m_ci.getDiagnostics(), pto);
@@ -119,7 +119,7 @@ namespace TruckBoris {
       // FIXME
       //delete m_headersElements;
     //}
-#if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR == 5)		
+#if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR >= 5)		
    //get gcc header with helpers 
 //    GenericGcc::GCCInstallationDetector gcc();
 //    if(gcc.isValid())
@@ -137,7 +137,11 @@ namespace TruckBoris {
 #endif
 
     m_headerElements = new HeaderElements(&(getSourceManager()), mainFile);
+#if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR >= 5)		
+    m_ci.setASTConsumer(llvm::make_unique<clang::ASTConsumer>(*m_headerElements));
+#else
     m_ci.setASTConsumer(m_headerElements);
+#endif
     m_ci.createASTContext();
     m_ci.getDiagnosticClient().BeginSourceFile(m_ci.getLangOpts()/*m_langOpts*/,
                                                &m_ci.getPreprocessor());
@@ -145,37 +149,6 @@ namespace TruckBoris {
     m_ci.getDiagnosticClient().EndSourceFile();
     return true;
   }
-/*  bool 
-  HeaderParser::parse(strd::string langage)
-  {
-    //ci not initialized or no source to parse
-    if(!m_ciInitialized || (m_source == std::string()) )
-      return false;
-    //clean all allowing to relaunch a parse  
-    if ( m_headerElements )
-    {
-      // FIXME
-      //delete m_headersElements;
-    }
-#ifdef CLANG_3_5
-   //get gcc header with helpers 
-    GenericGcc::GCCInstallationDetector gcc();
-    if(gcc.isValid())
-      gcc.print(llvm::outs); 
-#endif
-  clang::InitializePreprocessor(m_ci.getPreprocessor(),
-                                m_ci.getPreprocessorOpts(),
-                                *m_hso,
-                                m_ci.getFrontendOpts()); 
-    m_ci.createASTContext();
-    m_headerElements = new HeaderElements();
-    m_ci.setASTConsumer(m_headerElements);
-    m_ci.getDiagnosticClient().BeginSourceFile(m_langOpts,
-                                               &m_ci.getPreprocessor());
-    clang::ParseAST(m_ci.getPreprocessor(), m_headerElements, m_ci.getASTContext());
-    m_ci.getDiagnosticClient().EndSourceFile();
-    return true;
-  }*/
   clang::LangOptions& 
   HeaderParser::getLangOpts ()
   {
