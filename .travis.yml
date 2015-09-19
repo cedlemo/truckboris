@@ -1,6 +1,62 @@
 language: cpp
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y libcppunit-dev
-  - sudo apt-get install -y libclang-dev
-script: ./autogen.sh && make
+matrix:
+  include:
+    #    - os: linux
+    #      compiler: gcc
+    #      addons:
+    #        apt:
+    #          sources: ['ubuntu-toolchain-r-test']
+    #          packages: ['g++-4.8']
+    #      env: COMPILER=g++-4.8
+    #
+    #    - os: linux
+    #      compiler: gcc
+    #      addons:
+    #        apt:
+    #          sources: ['ubuntu-toolchain-r-test']
+    #          packages: ['g++-4.9']
+    #      env: COMPILER=g++-4.9
+    #
+    #    - os: linux
+    #      compiler: gcc
+    #      addons:
+    #        apt:
+    #          sources: ['ubuntu-toolchain-r-test']
+    #          packages: ['g++-5']
+    #      env: COMPILER=g++-5
+    #
+    #    - os: linux
+    #      compiler: clang
+    #      env: COMPILER=clang++
+    #
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.5']
+          packages: ['clang-3.5']
+      env: COMPILER=clang++-3.5
+
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6']
+          packages: ['clang-3.6']
+      env: COMPILER=clang++-3.6
+
+# Activate when 3.7 is released and the repository is available
+#    - os: linux
+#      compiler: clang
+#      addons:
+#        apt:
+#          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
+#          packages: ['clang-3.7']
+#      env: COMPILER=clang++-3.7
+
+# Activate when we are allowed to use MacOS X
+#    - os: osx
+#      compiler: clang
+#      env: COMPILER=clang++
+
+script: ./autogen.sh && make CXX=$COMPILER
