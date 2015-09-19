@@ -3,7 +3,7 @@
 Truckboris is a little library based on Clang. Truckboris allows you to easily 
 create a simple C source file parser. 
 
-```C++
+```c++
 #include <string>
 #include <iostream>
 #include <vector>
@@ -46,7 +46,7 @@ each functions for example, its name, its return type or an array of arguments.
 You can see in the file tests/TruckBorisTests.h how to use all the TruckBoris objects
 and methodsi with the source files in data/.
 
-```C++
+```c++
 void setUp()
 {
   m_headerParser = NULL;
@@ -77,7 +77,7 @@ void headerParser_testFunctions()
 }
 ```
 
-## Dependencies
+## Dependencies
 
 TruckBoris depends on LLVM and Clang >= 3.4. You need CPPUNIT (>= 1.12) for the tests.
 
@@ -98,7 +98,7 @@ TruckBoris depends on LLVM and Clang >= 3.4. You need CPPUNIT (>= 1.12) for the 
     sudo make install
 
 With this configuration, the installation create those files/directory:
-*    /usr/lib/libtruckboris.{so,la,so.1,so.1.0.0
+*    /usr/lib/libtruckboris.{so,la,so.1,so.x.x.x}
 *    /usr/include/truckboris with the needed headers.
 *    /usr/include/pkgconfig/truckboris.pc
 
