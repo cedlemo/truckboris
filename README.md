@@ -1,5 +1,7 @@
 # Truckboris
 
+[![Build Status](https://travis-ci.org/cedlemo/truckboris.svg?branch=master)](https://travis-ci.org/cedlemo/truckboris)
+
 Truckboris is a little library based on Clang. Truckboris allows you to easily 
 create a simple C source file parser. 
 
