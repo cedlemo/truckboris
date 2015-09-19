@@ -1,4 +1,4 @@
-AC_PREREQ(2.69)
+AC_PREREQ(2.68)
 AC_INIT(truckBoris, 1.0.3, cedlemo@gmx.fr)
 AC_CONFIG_SRCDIR(configure.ac)
 AM_CONFIG_HEADER(config.h)
