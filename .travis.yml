@@ -1,2 +1,2 @@
 language: cpp
-script:   ./autogen.sh && make && make check
+script: ./autogen.sh && make && make check
