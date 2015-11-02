@@ -192,7 +192,7 @@ namespace TruckBoris {
     {
       fields.push_back((*jt));
     }
-    if(0 && i < fields.size() )
+    if(i < fields.size() )
       return Field(fields[i]);
     else
       return Field(NULL);
@@ -237,7 +237,7 @@ namespace TruckBoris {
     {
       fields.push_back((*jt));
     }
-    if(0 && i < fields.size() )
+    if(i < fields.size() )
       return Field(fields[i]);
     else
       return Field(NULL);
