@@ -126,8 +126,8 @@ namespace TruckBoris {
       /*virtual*/ Enum& Equals(const Enum& enu);
 //#pragma clang diagnostic pop
       std::string getTagType() const;
-      int nbConstants() const;
-      EnumConstant getConstant(int i) const;
+      unsigned int nbConstants() const;
+      EnumConstant getConstant(unsigned int i) const;
   //    void printEnumsConstant() const;
     private:
       std::string m_tagType;

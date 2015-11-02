@@ -271,9 +271,9 @@ namespace TruckBoris {
   {
     return m_tagType;
   }
-  int Enum::nbConstants() const
+  unsigned int Enum::nbConstants() const
   {
-    int i = 0;
+    unsigned int i = 0;
     clang::EnumDecl *e;
     e = llvm::cast<clang::EnumDecl>(m_var);
     clang::EnumDecl::enumerator_iterator it;
@@ -283,19 +283,19 @@ namespace TruckBoris {
     } 
     return i;
   }
-  EnumConstant Enum::getConstant(int i) const
+  EnumConstant Enum::getConstant(unsigned int i) const
   {
     clang::EnumDecl *e;
     std::vector<clang::EnumConstantDecl *> constants;
     e = llvm::cast<clang::EnumDecl>(m_var);
     clang::EnumDecl::enumerator_iterator it;
-    int j =0;
+    unsigned int j =0;
     for(it=e->enumerator_begin(); it !=e->enumerator_end(); ++it)
     {
       j++;
       constants.push_back(*it);
     }
-    if(i>=0 && i <j)
+    if(i <j)
       return EnumConstant(constants[i]);
     else
       return EnumConstant(NULL);

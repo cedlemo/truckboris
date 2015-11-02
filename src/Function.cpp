@@ -46,7 +46,7 @@ namespace TruckBoris {
     else
       return Type();
   }
-  int Function::nbParameters() const
+  unsigned int Function::nbParameters() const
   {
     if(m_function)
       return m_function->getNumParams();
@@ -54,15 +54,13 @@ namespace TruckBoris {
       return 0;
   }
   Parameter
-  Function::getParameter(int i) const //for ruby interface
+  Function::getParameter(unsigned int i) const //for ruby interface
   {
     if(!m_function)
       return NULL;
 
-    int j;
-    if(i < 0)
-      j = 0;
-    else if( i > m_function->getNumParams() )
+    unsigned int j;
+    if( i > m_function->getNumParams() )
       j = m_function->getNumParams();
     else
       j = i;
