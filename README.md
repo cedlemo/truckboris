@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/cedlemo/truckboris.svg?branch=master)](https://travis-ci.org/cedlemo/truckboris)
 
-Truckboris is a little library based on Clang. Truckboris allows you to easily 
+Truckboris is a little library based on Clang (3.4 to 3.8). Truckboris allows you to easily 
 create a simple C source file parser. 
 
 ```c++
@@ -86,7 +86,7 @@ TruckBoris depends on LLVM and Clang >= 3.4. You need CPPUNIT (>= 1.12) for the 
 ## Installation
 
 ### Systems tested : 
-*    Archlinux (clang 3.6, CppUnit 1.13)
+*    Archlinux (clang 3.4 to 3.8, CppUnit 1.13)
 *    Fedora    (clang 3.5, CppUnit 1.12)
 *    Centos    (clang 3.4, CppUnit 1.12)
 
