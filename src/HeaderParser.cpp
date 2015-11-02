@@ -119,7 +119,13 @@ namespace TruckBoris {
       // FIXME
       //delete m_headersElements;
     //}
-#if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR >= 5)		
+#if (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR >= 7)		
+   m_ci.createPreprocessor(clang::TU_Complete);
+   clang::InitializePreprocessor(m_ci.getPreprocessor(),
+                                m_ci.getPreprocessorOpts(),
+                                m_ci.getPCHContainerReader(),
+                        				m_ci.getFrontendOpts());
+#elif (CLANG_VERSION_MAJOR == 3 && CLANG_VERSION_MINOR >= 5)		
    //get gcc header with helpers 
 //    GenericGcc::GCCInstallationDetector gcc();
 //    if(gcc.isValid())
