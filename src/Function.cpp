@@ -46,7 +46,8 @@ namespace TruckBoris {
     else
       return Type();
   }
-  unsigned int Function::nbParameters() const
+  unsigned int
+  Function::nbParameters() const
   {
     if(m_function)
       return m_function->getNumParams();
