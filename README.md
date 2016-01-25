@@ -5,6 +5,57 @@
 Truckboris is a little library based on Clang (3.4 to 3.8). Truckboris allows you to easily 
 create a simple C source file parser. 
 
+
+## Installation
+
+### Dependencies
+
+TruckBoris depends on LLVM and Clang >= 3.4. You need CPPUNIT (>= 1.12) for the tests.
+
+### Systems tested : 
+*    Archlinux (clang 3.4 to 3.7, CppUnit 1.13)
+*    Fedora    (clang 3.5, CppUnit 1.12)
+*    Centos    (clang 3.4, CppUnit 1.12)
+
+### Get the repository:
+<code>git clone https://github.com/cedlemo/truckboris</code>
+
+### Generate the make file and install
+
+    ./autogen.sh --prefix=/usr #use the prefix you want
+    make 
+    sudo make install
+
+You can generate the tests in order to see if everything is ok:
+
+    make check
+    ./test/truckBorisTests
+
+With this configuration, the installation create those files/directory:
+*    /usr/lib/libtruckboris.{so,la,so.1,so.x.x.x}
+*    /usr/include/truckboris with the needed headers.
+*    /usr/include/pkgconfig/truckboris.pc
+
+## Test easily with Vagrant:
+You can find a Vagrantfile in the root directory of this project. This vagrant file is intended to be used with an archlinux vagrant box.
+
+```
+vagrant box add archlinux-x86_64 http://cloud.terry.im/vagrant/archlinux-x86_64.box
+mkdir truckboris_test
+cd truckboris_test
+cp /path/to/Vagranfile ./
+vagrant up
+```
+
+## Use truckboris:
+For example, with the file tests/libtest_headerParser_obj.cpp:
+
+<code>clang++ -o libtest_headerParser_obj $(pkg-config --libs --cflags truckboris) libtest_headerParser_obj.cpp</code>
+
+You don't have to bother with the clang LLVM flags.
+
+## Examples:
+
 ```c++
 #include <string>
 #include <iostream>
@@ -78,35 +129,3 @@ void headerParser_testFunctions()
   CPPUNIT_ASSERT(f[3].isMain() == true);
 }
 ```
-
-## Dependencies
-
-TruckBoris depends on LLVM and Clang >= 3.4. You need CPPUNIT (>= 1.12) for the tests.
-
-## Installation
-
-### Systems tested : 
-*    Archlinux (clang 3.4 to 3.8, CppUnit 1.13)
-*    Fedora    (clang 3.5, CppUnit 1.12)
-*    Centos    (clang 3.4, CppUnit 1.12)
-
-### Get the repository:
-<code>git clone https://github.com/cedlemo/truckboris</code>
-
-### Generate the make file and install
-
-    ./autogen.sh --prefix=/usr #use the prefix you want
-    make 
-    sudo make install
-
-With this configuration, the installation create those files/directory:
-*    /usr/lib/libtruckboris.{so,la,so.1,so.x.x.x}
-*    /usr/include/truckboris with the needed headers.
-*    /usr/include/pkgconfig/truckboris.pc
-
-## Use truckboris:
-For example, with the file tests/libtest_headerParser_obj.cpp:
-
-<code>clang++ -o libtest_headerParser_obj $(pkg-config --libs --cflags truckboris) libtest_headerParser_obj.cpp</code>
-
-You don't have to bother with the clang LLVM flags.
